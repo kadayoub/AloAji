@@ -1175,7 +1175,9 @@ function WorkerSheet({ worker, onClose, onReview, currentUser, onNeedAuth, isFav
 
   // Called after login completes — auto-submit pending review
   useEffect(()=>{
-    if(currentUser && showAuthPrompt && rf.comment.trim() && rf.workType){
+    // Only auto-submit if user just logged in (not registered) via showAuthPrompt
+    // reviewAutoSubmitted=true means handleAuth already submitted it — skip
+    if(currentUser && showAuthPrompt && rf.comment.trim() && rf.workType && !reviewAutoSubmitted){
       setShowAuthPrompt(false);
       handleSubmitReview();
     }
@@ -2672,6 +2674,7 @@ export default function App() {
   };
 
   const [pendingReview,setPendingReview]=useState(null);
+  const [reviewJustSubmitted,setReviewJustSubmitted]=useState(false);
 
   const handleAuth = async (user) => {
     setCurrentUser(user);
@@ -2686,6 +2689,8 @@ export default function App() {
     if(pendingReview && (user.role==="consumer"||user.role==="worker")){
       const { workerId, review } = pendingReview;
       setPendingReview(null);
+      setReviewJustSubmitted(true);
+      setTimeout(()=>setReviewJustSubmitted(false), 3000);
       try {
         await supabase.from("reviews").insert({
           worker_id: workerId,
@@ -2840,6 +2845,7 @@ export default function App() {
           onNeedAuth={(rv)=>handleNeedAuth(rv, selectedWorker.id)}
           isFav={favorites.includes(selectedWorker.id)}
           onToggleFav={()=>toggleFavorite(selectedWorker.id)}
+          reviewAutoSubmitted={reviewJustSubmitted}
           t={t}/>
       )}
 
