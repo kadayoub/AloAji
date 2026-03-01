@@ -8,6 +8,12 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
+// ── Admin allowlist — only these emails can access the admin panel ──────────
+// Add your admin emails here. These must also exist in Supabase Auth → Users.
+const ADMIN_EMAILS = [
+  "hello@ayoubka.com",
+];
+
 // ─── DESIGN TOKENS (matches main app DARK theme) ─────────────────────────────
 const T = {
   bg:       "#09090b", bg2:     "#18181b", bg3:     "#27272a",
@@ -65,6 +71,7 @@ const IC = {
   hammer2:     ["M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"],
   grid2:       ["M3 3h7v7H3z","M14 3h7v7h-7z","M14 14h7v7h-7z","M3 14h7v7H3z"],
   thermometer: ["M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"],
+  image: "M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z",
   flame2:      "M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z",
 };
 
@@ -125,6 +132,13 @@ const ago = s => {
   return m<60?`${m}min`:m<1440?`${Math.round(m/60)}h`:`${Math.round(m/1440)}j`;
 };
 const GRAD_COLORS = [["#1e3a5f","#2d5a8e"],["#3d1a5f","#6b3fa0"],["#1a3d2d","#2d6b4a"],["#5f3a1a","#a06b2d"],["#1a2d5f","#2d4aa0"],["#5f1a3a","#a02d6b"]];
+
+
+const PRICE_LEVELS = [
+  { id:1, label:"€",   desc:"Économique", color:"#16A34A" },
+  { id:2, label:"€€",  desc:"Modéré",     color:"#D97706" },
+  { id:3, label:"€€€", desc:"Premium",    color:"#DC2626" },
+];
 
 // ─── BASE COMPONENTS ──────────────────────────────────────────────────────────
 function Avatar({ name, size=40, gi=0 }) {
@@ -270,11 +284,12 @@ function StatCard({ label, value, icon, color, onClick }) {
 }
 
 // ─── SECTION: DASHBOARD ───────────────────────────────────────────────────────
-function Dashboard({ workers, pending, cities, profs, go }) {
+function Dashboard({ workers, pending, consumers=[], cities, profs, go }) {
   const total = workers.length;
   const avail = workers.filter(w=>w.available).length;
   const allR  = workers.flatMap(w=>w.reviews||[]);
   const gr    = allR.length ? (allR.reduce((a,r)=>a+r.rating,0)/allR.length).toFixed(1) : "—";
+  const totalConsumers = consumers.length;
 
   return (
     <div>
@@ -304,9 +319,10 @@ function Dashboard({ workers, pending, cities, profs, go }) {
 
       {/* Stats grid */}
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))",gap:10,marginBottom:24}}>
-        <StatCard label="Artisans approuvés" value={total}  icon={IC.users}          color={T.info}/>
-        <StatCard label="Disponibles"        value={avail}  icon={IC.check}          color={T.success}/>
-        <StatCard label="En attente"         value={pending.length} icon={IC.clock}  color={T.warning} onClick={()=>go("pending")}/>
+        <StatCard label="Artisans approuvés" value={total}           icon={IC.users}    color={T.info}/>
+        <StatCard label="Membres inscrits"    value={totalConsumers} icon={IC.user}    color={T.primary} onClick={()=>go("membres")}/>
+        <StatCard label="Disponibles"         value={avail}          icon={IC.check}   color={T.success}/>
+        <StatCard label="En attente"          value={pending.length} icon={IC.clock}   color={T.warning} onClick={()=>go("pending")}/>
         <StatCard label="Avis clients"       value={allR.length}    icon={IC.messageCircle} color={T.accent}/>
         <StatCard label="Note moyenne"       value={gr+"★"}         icon={IC.star}   color={T.accent}/>
         <StatCard label="Villes"             value={cities.length}  icon={IC.mapPin} color={T.info} onClick={()=>go("cities")}/>
@@ -352,6 +368,12 @@ function Dashboard({ workers, pending, cities, profs, go }) {
                   whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w.name}</div>
                 <div style={{fontSize:10,color:T.text3,marginTop:1,display:"flex",alignItems:"center",gap:3}}>
                   <Icon d={IC.mapPin} size={9} color={T.text3}/>{w.city}
+                  {w.price_level>0&&PRICE_LEVELS.find(p=>p.id===w.price_level)&&(
+                    <span style={{marginLeft:4,fontSize:10,fontWeight:800,
+                      color:PRICE_LEVELS.find(p=>p.id===w.price_level).color}}>
+                      {PRICE_LEVELS.find(p=>p.id===w.price_level).label}
+                    </span>
+                  )}
                 </div>
               </div>
               <div style={{display:"inline-flex",alignItems:"center",gap:4,padding:"2px 8px",
@@ -370,7 +392,7 @@ function Dashboard({ workers, pending, cities, profs, go }) {
 }
 
 // ─── SECTION: PENDING ─────────────────────────────────────────────────────────
-function Pending({ pending, profs, onApprove, onReject }) {
+function Pending({ pending, profs, onApprove, onReject, onRefresh }) {
   const [detail, setDetail] = useState(null);
 
   return (
@@ -423,6 +445,25 @@ function Pending({ pending, profs, onApprove, onReject }) {
                       ))}
                     </div>
                     {w.bio&&<p style={{margin:"8px 0 0",color:T.text2,fontSize:12,lineHeight:1.5}}>{w.bio}</p>}
+                    {/* Price Level Editor */}
+                    <div style={{margin:"10px 0 0",padding:"10px",background:T.bg,borderRadius:8,border:`1px solid ${T.border}`}}>
+                      <div style={{fontSize:11,fontWeight:600,color:T.text3,marginBottom:8}}>Niveau de prix</div>
+                      <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                        {[{id:0,label:"Non défini",color:T.text3},...PRICE_LEVELS].map(pl=>(
+                          <button key={pl.id}
+                            onClick={async()=>{
+                              await supabase.from("workers").update({price_level:pl.id||null}).eq("id",w.id);
+                              onRefresh&&await onRefresh();
+                            }}
+                            style={{padding:"4px 10px",borderRadius:6,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                              border:`1.5px solid ${(w.price_level||0)===pl.id?pl.color||T.primary:T.border}`,
+                              background:(w.price_level||0)===pl.id?`${pl.color||T.primary}18`:T.bg2,
+                              color:(w.price_level||0)===pl.id?pl.color||T.primary:T.text3}}>
+                            {pl.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                     <div style={{display:"flex",gap:8,marginTop:12}}>
                       <Btn variant="success" size="sm" onClick={()=>onApprove(w.id)}>
                         <Icon d={IC.check} size={13} color={T.success}/>Approuver
@@ -503,7 +544,7 @@ function Pending({ pending, profs, onApprove, onReject }) {
 
 // ─── SECTION: WORKERS ─────────────────────────────────────────────────────────
 function WorkerForm({ init, profs, cities, onSave, onCancel }) {
-  const [f, setF] = useState(init || { name:"", phone:"", city:"", professions:[], bio:"", available:true });
+  const [f, setF] = useState(init ? {...init, price_level: init.price_level||0} : { name:"", phone:"", city:"", professions:[], bio:"", available:true, price_level:0 });
   const [err, setErr] = useState("");
   const tog = pid => setF(p=>({...p,professions:p.professions.includes(pid)?p.professions.filter(x=>x!==pid):[...p.professions,pid]}));
   const sub = () => {
@@ -583,6 +624,41 @@ function WorkerForm({ init, profs, cities, onSave, onCancel }) {
                 transition:"left .25s"}}/>
             </button>
           </div>
+          {/* Password Reset */}
+          {init?.id&&init?.email&&(
+            <div style={{background:T.bg2,borderRadius:8,padding:"12px 14px",border:`1px solid ${T.border}`}}>
+              <div style={{fontWeight:500,fontSize:13,color:T.text,marginBottom:4}}>Réinitialisation du mot de passe</div>
+              <div style={{fontSize:11,color:T.text3,marginBottom:10}}>Envoie un lien de réinitialisation à {init.email}</div>
+              <button onClick={async()=>{
+                const { error } = await supabase.auth.resetPasswordForEmail(init.email, {
+                  redirectTo: "https://aloaji.ma"
+                });
+                if(error) alert("Erreur: "+error.message);
+                else alert("Email de réinitialisation envoyé à "+init.email);
+              }} style={{padding:"7px 14px",borderRadius:7,border:`1px solid ${T.border}`,
+                background:T.bg3,color:T.text2,fontSize:12,fontWeight:600,cursor:"pointer",
+                fontFamily:"inherit"}}>
+                Envoyer lien de réinitialisation
+              </button>
+            </div>
+          )}
+          {/* Price Level */}
+          <div style={{background:T.bg2,borderRadius:8,padding:"12px 14px",border:`1px solid ${T.border}`}}>
+            <div style={{fontWeight:500,fontSize:13,color:T.text,marginBottom:10}}>Niveau de prix</div>
+            <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+              {[{id:0,label:"Non défini",color:T.text3},...PRICE_LEVELS].map(pl=>(
+                <button key={pl.id}
+                  onClick={()=>setF(p=>({...p,price_level:pl.id}))}
+                  style={{padding:"6px 14px",borderRadius:8,fontSize:12,fontWeight:700,
+                    cursor:"pointer",fontFamily:"inherit",
+                    border:`1.5px solid ${(f.price_level||0)===pl.id?pl.color||T.border2:T.border}`,
+                    background:(f.price_level||0)===pl.id?`${pl.color||T.primary}20`:T.bg3,
+                    color:(f.price_level||0)===pl.id?pl.color||T.primary:T.text3}}>
+                  {pl.label}
+                </button>
+              ))}
+            </div>
+          </div>
           {err&&<div style={{background:T.dangerLight,border:`1px solid ${T.danger}28`,
             borderRadius:7,padding:"8px 12px",color:T.danger,fontSize:12}}>{err}</div>}
           <div style={{display:"flex",gap:8}}>
@@ -598,7 +674,7 @@ function WorkerForm({ init, profs, cities, onSave, onCancel }) {
   );
 }
 
-function Workers({ workers, setWorkers, profs, cities }) {
+function Workers({ workers, setWorkers, profs, cities, onRefresh }) {
   const [view,     setView]   = useState("list");
   const [target,   setTarget] = useState(null);
   const [search,   setSearch] = useState("");
@@ -624,7 +700,7 @@ function Workers({ workers, setWorkers, profs, cities }) {
     try {
       if(target?.id) {
         // Update worker
-        await supabase.from("workers").update({name:f.name,phone:f.phone,city_id,bio:f.bio,available:f.available}).eq("id",target.id);
+        await supabase.from("workers").update({name:f.name,phone:f.phone,city_id,bio:f.bio,available:f.available,price_level:f.price_level||null}).eq("id",target.id);
         // Sync professions: delete all, re-insert
         await supabase.from("worker_professions").delete().eq("worker_id",target.id);
         if(f.professions.length) {
@@ -718,6 +794,9 @@ function Workers({ workers, setWorkers, profs, cities }) {
                     <span style={{display:"flex",alignItems:"center",gap:3}}>
                       <Icon d={IC.phone} size={10} color={T.text3}/>{w.phone}
                     </span>
+                    {w.email&&<span style={{display:"flex",alignItems:"center",gap:3}}>
+                      <Icon d={IC.user} size={10} color={T.text3}/>{w.email}
+                    </span>}
                     {rating&&<span style={{display:"flex",alignItems:"center",gap:3}}>
                       <Icon d={IC.star} size={10} color={T.accent} style={{fill:T.accent}}/>{rating}
                     </span>}
@@ -1083,6 +1162,116 @@ function Reviews({ workers }) {
 }
 
 // ─── LOGIN ───────────────────────────────────────────────────────────────────
+function Membres({ consumers, onRefresh }) {
+  const [search, setSearch] = useState("");
+  const [resetEmail, setResetEmail] = useState(null);
+  const [resetting, setResetting] = useState(false);
+
+  const list = (consumers||[]).filter(c =>
+    (c.name||"").toLowerCase().includes(search.toLowerCase()) ||
+    (c.email||"").toLowerCase().includes(search.toLowerCase())
+  );
+
+  const sendReset = async (email) => {
+    setResetting(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "https://aloaji.ma"
+    });
+    setResetting(false);
+    setResetEmail(null);
+    if(error) alert("Erreur: "+error.message);
+    else alert("Email de réinitialisation envoyé à "+email);
+  };
+
+  return (
+    <div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+        <div>
+          <h2 style={{margin:"0 0 4px",fontSize:20,fontWeight:700,color:T.text}}>Membres</h2>
+          <p style={{margin:0,fontSize:13,color:T.text3}}>{list.length} membre{list.length!==1?"s":""} inscrit{list.length!==1?"s":""}</p>
+        </div>
+        <button onClick={onRefresh} style={{padding:"7px 14px",borderRadius:7,border:`1px solid ${T.border}`,
+          background:T.bg2,color:T.text2,fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>
+          Actualiser
+        </button>
+      </div>
+
+      {/* Search */}
+      <div style={{position:"relative",marginBottom:16}}>
+        <Icon d={IC.search} size={14} color={T.text3} style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)"}}/>
+        <input value={search} onChange={e=>setSearch(e.target.value)}
+          placeholder="Rechercher par nom ou email..."
+          style={{width:"100%",boxSizing:"border-box",paddingLeft:36,paddingRight:14,
+            paddingTop:10,paddingBottom:10,borderRadius:8,border:`1px solid ${T.border}`,
+            background:T.bg2,color:T.text,fontSize:13,outline:"none",fontFamily:"inherit"}}/>
+      </div>
+
+      {/* List */}
+      <div style={{display:"flex",flexDirection:"column",gap:8}}>
+        {list.length===0&&(
+          <div style={{textAlign:"center",padding:"40px 20px",color:T.text3,fontSize:13}}>
+            {search ? "Aucun membre trouvé" : "Aucun membre inscrit"}
+          </div>
+        )}
+        {list.map(c=>(
+          <div key={c.id} style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:12,
+            padding:"14px 16px",display:"flex",alignItems:"center",gap:14}}>
+            {/* Avatar */}
+            <div style={{width:40,height:40,borderRadius:"50%",flexShrink:0,
+              background:`linear-gradient(135deg,#6366F1,#8B5CF6)`,
+              display:"flex",alignItems:"center",justifyContent:"center",
+              fontSize:15,fontWeight:700,color:"#fff"}}>
+              {(c.name||c.email||"?")[0].toUpperCase()}
+            </div>
+            {/* Info */}
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontWeight:600,fontSize:14,color:T.text,marginBottom:2}}>
+                {c.name||<span style={{color:T.text3,fontStyle:"italic"}}>Sans nom</span>}
+              </div>
+              <div style={{fontSize:12,color:T.text3,display:"flex",alignItems:"center",gap:4}}>
+                <Icon d={IC.user} size={10} color={T.text3}/>{c.email||"—"}
+              </div>
+              {c.created_at&&(
+                <div style={{fontSize:11,color:T.text3,marginTop:2}}>
+                  Inscrit le {new Date(c.created_at).toLocaleDateString("fr-FR")}
+                </div>
+              )}
+            </div>
+            {/* Actions */}
+            <div style={{display:"flex",gap:8,flexShrink:0}}>
+              {resetEmail===c.email ? (
+                <div style={{display:"flex",gap:6,alignItems:"center"}}>
+                  <span style={{fontSize:12,color:T.text3}}>Confirmer ?</span>
+                  <button onClick={()=>sendReset(c.email)} disabled={resetting}
+                    style={{padding:"5px 10px",borderRadius:6,border:`1px solid ${T.success}`,
+                      background:T.successLight,color:T.success,fontSize:11,
+                      fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>
+                    {resetting?"...":"Oui"}
+                  </button>
+                  <button onClick={()=>setResetEmail(null)}
+                    style={{padding:"5px 10px",borderRadius:6,border:`1px solid ${T.border}`,
+                      background:"transparent",color:T.text3,fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>
+                    Non
+                  </button>
+                </div>
+              ) : (
+                <button onClick={()=>setResetEmail(c.email)}
+                  style={{padding:"6px 12px",borderRadius:7,border:`1px solid ${T.border}`,
+                    background:T.bg2,color:T.text2,fontSize:12,fontWeight:500,
+                    cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:5}}>
+                  <Icon d={IC.shield} size={11} color={T.text3}/>
+                  Réinitialiser MDP
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [pass,  setPass]  = useState("");
@@ -1091,25 +1280,18 @@ function Login({ onLogin }) {
 
   const go = async () => {
     if(!email.trim()||!pass.trim()){setErr("Renseignez votre email et mot de passe.");return;}
+    // Check allowlist first — before even hitting Supabase
+    if(!ADMIN_EMAILS.includes(email.trim().toLowerCase())){
+      setErr("Accès refusé.");
+      return;
+    }
     setLoading(true);setErr("");
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password: pass });
       if(error) throw error;
-      // Verify this email is in the admins table
-      const { data: adminRow, error: aErr } = await supabase
-        .from("admins").select("id,name,email").eq("email", email.trim()).maybeSingle();
-      if(aErr) {
-        // admins table may not exist yet or RLS blocks it — still allow since Supabase auth passed
-        // Once admins table is confirmed, remove this fallback
-        onLogin({ name: data.user?.email?.split("@")[0] || "Admin", email: email.trim() });
-      } else if(!adminRow) {
-        await supabase.auth.signOut();
-        throw new Error("Accès refusé — cet email n'est pas dans la table admins.");
-      } else {
-        onLogin(adminRow);
-      }
+      onLogin({ name: data.user?.email?.split("@")[0] || "Admin", email: email.trim() });
     } catch(e) {
-      setErr(e.message||"Identifiants incorrects.");
+      setErr("Email ou mot de passe incorrect.");
     }
     setLoading(false);
   };
@@ -1157,17 +1339,116 @@ function Login({ onLogin }) {
 }
 
 // ─── ROOT ─────────────────────────────────────────────────────────────────────
+
+// ─── BANNER MANAGER ──────────────────────────────────────────────────────────
+function BannerManager({ T }) {
+  const [banner, setBanner]     = useState(null);   // {url, link, active}
+  const [loading, setLoading]   = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [link, setLink]         = useState("");
+  const [active, setActive]     = useState(true);
+  const fileRef = useRef();
+
+  useEffect(() => { loadBanner(); }, []);
+
+  const loadBanner = async () => {
+    setLoading(true);
+    const { data } = await supabase.from("banner").select("*").maybeSingle();
+    if (data) { setBanner(data); setLink(data.link||""); setActive(data.active!==false); }
+    setLoading(false);
+  };
+
+  const uploadImage = async (file) => {
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop();
+      const path = `banner/banner.${ext}`;
+      await supabase.storage.from("worker-photos").upload(path, file, { upsert: true });
+      const { data: { publicUrl } } = supabase.storage.from("worker-photos").getPublicUrl(path);
+      const url = publicUrl + "?t=" + Date.now();
+      const row = { url, link, active };
+      if (banner?.id) {
+        await supabase.from("banner").update(row).eq("id", banner.id);
+      } else {
+        await supabase.from("banner").insert(row);
+      }
+      await loadBanner();
+    } catch(e) { alert("Erreur: " + e.message); }
+    setUploading(false);
+  };
+
+  const saveMeta = async () => {
+    if (!banner?.id) return;
+    await supabase.from("banner").update({ link, active }).eq("id", banner.id);
+    await loadBanner();
+  };
+
+  if (loading) return <div style={{padding:40,textAlign:"center",color:T.text3}}>Chargement...</div>;
+
+  return (
+    <div style={{maxWidth:700,margin:"0 auto",padding:24}}>
+      <h2 style={{margin:"0 0 24px",fontSize:20,fontWeight:800,color:T.text}}>Gestion de la Bannière</h2>
+
+      {/* Preview */}
+      <div style={{borderRadius:16,overflow:"hidden",border:`1px solid ${T.border}`,marginBottom:24,background:T.bg2,minHeight:180,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",cursor:"pointer"}}
+        onClick={()=>fileRef.current?.click()}>
+        {banner?.url
+          ? <img src={banner.url} alt="Bannière" style={{width:"100%",maxHeight:240,objectFit:"cover",display:"block"}}/>
+          : <div style={{textAlign:"center",padding:40,color:T.text3}}>
+              <div style={{fontSize:40,marginBottom:12}}>🖼️</div>
+              <div style={{fontWeight:600,fontSize:15,color:T.text2}}>Cliquez pour uploader une image</div>
+              <div style={{fontSize:12,marginTop:6}}>Recommandé: 1200×300px, JPG ou PNG</div>
+            </div>}
+        <div style={{position:"absolute",bottom:12,right:12,background:"rgba(0,0,0,0.6)",borderRadius:8,
+          padding:"6px 14px",color:"#fff",fontSize:12,fontWeight:600,backdropFilter:"blur(4px)"}}>
+          {uploading ? "Upload en cours..." : "Changer l'image"}
+        </div>
+      </div>
+      <input ref={fileRef} type="file" accept="image/*" style={{display:"none"}}
+        onChange={e=>{ const f=e.target.files[0]; if(f) uploadImage(f); e.target.value=""; }}/>
+
+      {/* Settings */}
+      <div style={{background:T.card,borderRadius:14,border:`1px solid ${T.border}`,padding:24,display:"flex",flexDirection:"column",gap:16}}>
+        <div>
+          <label style={{fontSize:12,fontWeight:600,color:T.text3,display:"block",marginBottom:6}}>LIEN (optionnel)</label>
+          <input value={link} onChange={e=>setLink(e.target.value)} placeholder="https://..."
+            style={{width:"100%",boxSizing:"border-box",padding:"10px 12px",borderRadius:8,
+              border:`1px solid ${T.border}`,background:T.bg2,color:T.text,fontSize:13,fontFamily:"inherit",outline:"none"}}/>
+        </div>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div>
+            <div style={{fontWeight:600,fontSize:14,color:T.text}}>Bannière active</div>
+            <div style={{fontSize:12,color:T.text3,marginTop:2}}>Affichée sur la page d'accueil</div>
+          </div>
+          <button onClick={()=>setActive(v=>!v)}
+            style={{width:48,height:26,borderRadius:13,background:active?"#16A34A":"#D1D5DB",
+              border:"none",cursor:"pointer",position:"relative",transition:"background .2s"}}>
+            <div style={{width:20,height:20,borderRadius:"50%",background:"#fff",position:"absolute",
+              top:3,left:active?"calc(100% - 23px)":"3px",transition:"left .2s",boxShadow:"0 1px 3px rgba(0,0,0,0.2)"}}/>
+          </button>
+        </div>
+        <button onClick={saveMeta}
+          style={{padding:"11px",borderRadius:10,border:"none",background:"#16A34A",color:"#fff",
+            fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
+          Enregistrer les paramètres
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminApp() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [section,  setSection]  = useState("dashboard");
-  const [workers,  setWorkers]  = useState([]);
-  const [pending,  setPending]  = useState([]);
-  const [profs,    setProfs]    = useState([]);
-  const [cities,   setCities]   = useState([]);
-  const [loading,  setLoading]  = useState(false);
-  const [toast,    setToast]    = useState("");
-  const [dbErrors, setDbErrors] = useState([]);
-  const [admin,    setAdmin]    = useState(null);
+  const [workers,   setWorkers]   = useState([]);
+  const [pending,   setPending]   = useState([]);
+  const [consumers, setConsumers] = useState([]);
+  const [profs,     setProfs]     = useState([]);
+  const [cities,    setCities]    = useState([]);
+  const [loading,   setLoading]   = useState(false);
+  const [toast,     setToast]     = useState("");
+  const [dbErrors,  setDbErrors]  = useState([]);
+  const [admin,     setAdmin]     = useState(null);
 
   // Restore session on mount — check if Supabase already has an active session
   useEffect(() => {
@@ -1175,9 +1456,12 @@ export default function AdminApp() {
       const { data: { session } } = await supabase.auth.getSession();
       if(!session) return; // no session — stay on login screen
       // Session exists — verify still in admins table
-      const { data: adminRow } = await supabase
-        .from("admins").select("id,name,email").eq("email", session.user.email).maybeSingle();
-      const adminData = adminRow || { name: session.user.email.split("@")[0], email: session.user.email };
+      // Verify email is in admin allowlist
+      if(!ADMIN_EMAILS.includes(session.user.email.toLowerCase())){
+        await supabase.auth.signOut();
+        return;
+      }
+      const adminData = { name: session.user.email.split("@")[0], email: session.user.email };
       setAdmin(adminData);
       setLoggedIn(true);
       loadAll();
@@ -1197,16 +1481,20 @@ export default function AdminApp() {
         { data: ps,         error: psErr  },
         { data: cs,         error: csErr  },
         { data: pending_ws, error: pwErr  },
+        { data: cons,       error: conErr },
       ] = await Promise.all([
         supabase.from("workers").select(`*, city:cities(name), worker_professions(profession:professions(*)), reviews(*), portfolio_photos(*)`).in("status",["approved","rejected"]).order("created_at",{ascending:false}),
         supabase.from("professions").select("*").order("name"),
         supabase.from("cities").select("*").order("name"),
         supabase.from("workers").select(`*, city:cities(name), worker_professions(profession:professions(*))`).eq("status","pending").order("created_at",{ascending:false}),
+        supabase.from("user_profiles").select("*").order("created_at",{ascending:false}),
       ]);
-      if(wsErr) errs.push("Artisans: "+wsErr.message);
-      if(psErr) errs.push("Métiers: "+psErr.message);
-      if(csErr) errs.push("Villes: "+csErr.message);
-      if(pwErr) errs.push("En attente: "+pwErr.message);
+      if(wsErr)  errs.push("Artisans: "+wsErr.message);
+      if(psErr)  errs.push("Métiers: "+psErr.message);
+      if(csErr)  errs.push("Villes: "+csErr.message);
+      if(pwErr)  errs.push("En attente: "+pwErr.message);
+      if(conErr) errs.push("Membres: "+conErr.message);
+      if(cons) setConsumers(cons);
       if(ws) setWorkers(ws.map((w,i)=>({
         ...w, gi:i%6,
         city: w.city?.name||"",
@@ -1241,31 +1529,6 @@ export default function AdminApp() {
   };
 
   // Send SMS via direct fetch to Supabase Edge Function
-  const sendSms = async (workerName, workerPhone, action) => {
-    const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-approval-sms`;
-    console.log("📱 Calling SMS edge function:", url, { workerName, workerPhone, action });
-    try {
-      const res = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify({ workerName, workerPhone, action }),
-      });
-      const data = await res.json();
-      if(!res.ok) {
-        console.error("❌ SMS failed:", res.status, data);
-        flash(`SMS non envoyé: ${data.error||res.status}`);
-      } else {
-        console.log("✅ SMS envoyé à", workerPhone, "sid:", data.sid);
-        flash(`SMS envoyé à ${workerName} ✓`);
-      }
-    } catch(e) {
-      console.error("❌ SMS fetch error:", e.message);
-      flash(`SMS erreur: ${e.message}`);
-    }
-  };
 
   const approve = async id => {
     const w = pending.find(p=>p.id===id);
@@ -1283,8 +1546,12 @@ export default function AdminApp() {
       flash(`Erreur: ${error.message}`);
       return;
     }
-    // Send approval SMS
-    sendSms(w.name, w.phone, "approved");
+    // Send approval notification — worker sets password via this link
+    if(w.email){
+      await supabase.auth.resetPasswordForEmail(w.email, {
+        redirectTo: "https://aloaji.ma/mon-espace"
+      });
+    }
   };
 
   const reject = async id => {
@@ -1303,8 +1570,6 @@ export default function AdminApp() {
       flash(`Erreur: ${error.message}`);
       return;
     }
-    // Send rejection SMS
-    sendSms(w.name, w.phone, "rejected");
   };
 
   if(!loggedIn) return <Login onLogin={(adminRow)=>{ setAdmin(adminRow); setLoggedIn(true); loadAll(); }}/>;
@@ -1313,8 +1578,10 @@ export default function AdminApp() {
     { id:"dashboard",   label:"Dashboard",     icon:IC.barChart },
     { id:"pending",     label:"En attente",    icon:IC.clock,    badge:pending.length },
     { id:"workers",     label:"Artisans",      icon:IC.users,    badge:workers.length },
+    { id:"membres",     label:"Membres",       icon:IC.user,     badge:consumers.length },
     { id:"professions", label:"Métiers",       icon:IC.wrench },
     { id:"cities",      label:"Villes",        icon:IC.mapPin },
+    { id:"banner",      label:"Bannière",      icon:IC.eye },
     { id:"reviews",     label:"Avis",          icon:IC.messageCircle },
   ];
 
@@ -1425,10 +1692,12 @@ export default function AdminApp() {
         )}
 
         {!loading&&section==="dashboard"   &&<Dashboard workers={workers} pending={pending} cities={cities} profs={profs} go={setSection}/>}
-        {!loading&&section==="pending"     &&<Pending pending={pending} profs={profs} onApprove={approve} onReject={reject}/>}
-        {!loading&&section==="workers"     &&<Workers workers={workers} setWorkers={setWorkers} profs={profs} cities={cities}/>}
+        {!loading&&section==="pending"     &&<Pending pending={pending} profs={profs} onApprove={approve} onReject={reject} onRefresh={loadAll}/>}
+        {!loading&&section==="workers"     &&<Workers workers={workers} setWorkers={setWorkers} profs={profs} cities={cities} onRefresh={loadAll}/>}
+        {!loading&&section==="membres"     &&<Membres consumers={consumers} onRefresh={loadAll}/>}
         {!loading&&section==="professions" &&<Professions profs={profs} setProfs={setProfs} workers={workers}/>}
         {!loading&&section==="cities"      &&<Cities cities={cities} setCities={setCities} workers={workers}/>}
+        {!loading&&section==="banner"      &&<BannerManager T={T}/>}
         {!loading&&section==="reviews"     &&<Reviews workers={workers}/>}
       </main>
 

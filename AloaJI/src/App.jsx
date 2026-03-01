@@ -1,4 +1,24 @@
 import { useState, useRef, useEffect } from "react";
+
+// ─── LOGO ─────────────────────────────────────────────────────────────────────
+function AloAjiLogo({ height=24, dark=false }) {
+  const textColor = dark ? "#F9FAFB" : "#1F2937";
+  return (
+    <svg height={height} viewBox="0 0 1345 396" fill="none" xmlns="http://www.w3.org/2000/svg" style={{display:"block"}}>
+      <rect width="396" height="396" fill="#16A34A"/>
+      <path d="M204.941 121.434C204.941 125.551 200.779 128.806 198.594 132.286C198.367 132.648 198.165 133.039 197.993 133.461L165.2 213.665C163.248 218.441 166.735 223.685 171.864 223.685H197.736C201.715 223.685 204.941 226.934 204.941 230.942V248.474C204.941 252.481 201.715 255.73 197.736 255.73H152.806C149.878 255.73 147.242 257.517 146.136 260.248L123.852 315.303C122.747 318.034 120.111 319.82 117.182 319.82H95.2117C90.0503 319.82 86.5641 314.514 88.5801 309.729L185.18 80.422C186.309 77.7418 188.92 76.0006 191.811 76H197.736C201.715 76 204.941 79.2489 204.941 83.2565V121.434Z" fill="white"/>
+      <path d="M152.538 306.094C149.489 303.771 149.191 299.374 151.608 296.39L163.953 281.149C166.558 277.933 171.292 277.606 174.695 279.947C184.744 286.862 197.375 290.91 210.243 290.91C238.256 290.91 258.315 270.011 258.315 235.528V181.22C258.315 177.213 261.541 173.964 265.52 173.964H287.424C291.403 173.964 294.629 177.213 294.629 181.22V241.101C294.629 291.607 259.699 324 211.972 324C188.454 324 167.982 317.865 152.538 306.094Z" fill="white"/>
+      <path d="M257.908 163.376C258.116 163.697 258.392 163.969 258.716 164.171C259.125 164.426 259.598 164.562 260.078 164.565C272.615 164.632 282.586 164.69 290.95 164.728C291.547 164.73 292.032 164.243 292.032 163.642C292.032 163.442 292.087 163.246 292.19 163.075L306.944 138.745C307.963 137.065 308.26 135.04 307.768 133.135L294.988 83.6624C294.151 80.4239 291.224 78.1814 287.902 78.2338L259.77 78.6716C256.449 78.7226 253.592 81.0537 252.855 84.3155L241.58 134.161C241.146 136.081 241.504 138.095 242.574 139.743L257.908 163.376Z" fill="white"/>
+      <path d="M505.6 255.424C505.6 221.248 529.024 200.896 569.728 198.208L630.784 193.6V180.928C630.784 158.656 616.192 145.216 590.464 145.216C571.648 145.216 554.368 150.976 537.856 164.032L520.576 136C540.928 118.72 566.656 110.272 595.84 110.272C640 110.272 668.8 136 668.8 175.936V264.256C668.8 271.552 672.64 275.392 680.32 275.392H690.304V309.568H671.104C652.288 309.568 638.464 300.352 633.472 284.992C620.416 303.04 598.528 313.792 572.416 313.792C534.016 313.792 505.6 289.6 505.6 255.424ZM542.848 255.04C542.848 271.936 558.208 283.456 580.096 283.456C608.128 283.456 630.784 263.872 630.784 239.296V223.168L575.488 227.776C553.984 229.312 542.848 238.912 542.848 255.04Z" fill={textColor}/>
+      <path d="M753.85 309.568H715.066V40.768H753.85V309.568Z" fill={textColor}/>
+      <path d="M994.702 211.648C994.702 268.096 947.854 314.176 889.486 314.176C831.118 314.176 784.27 268.096 784.27 211.648C784.27 155.2 831.118 109.504 889.486 109.504C947.854 109.504 994.702 155.2 994.702 211.648ZM955.918 211.648C955.918 174.016 926.35 144.064 889.486 144.064C852.622 144.064 823.054 174.016 823.054 211.648C823.054 249.664 852.622 279.616 889.486 279.616C926.35 279.616 955.918 249.664 955.918 211.648Z" fill={textColor}/>
+      <path d="M1015.97 255.424C1015.97 221.248 1039.4 200.896 1080.1 198.208L1141.16 193.6V180.928C1141.16 158.656 1126.57 145.216 1100.84 145.216C1082.02 145.216 1064.74 150.976 1048.23 164.032L1030.95 136C1051.3 118.72 1077.03 110.272 1106.21 110.272C1150.37 110.272 1179.17 136 1179.17 175.936V264.256C1179.17 271.552 1183.01 275.392 1190.69 275.392H1200.68V309.568H1181.48C1162.66 309.568 1148.84 300.352 1143.85 284.992C1130.79 303.04 1108.9 313.792 1082.79 313.792C1044.39 313.792 1015.97 289.6 1015.97 255.424ZM1053.22 255.04C1053.22 271.936 1068.58 283.456 1090.47 283.456C1118.5 283.456 1141.16 263.872 1141.16 239.296V223.168L1085.86 227.776C1064.36 229.312 1053.22 238.912 1053.22 255.04Z" fill={textColor}/>
+      <path d="M1245.02 86.464C1231.97 86.464 1221.6 76.096 1221.6 63.04C1221.6 50.368 1231.97 40 1245.02 40C1257.7 40 1267.68 50.368 1267.68 63.04C1267.68 76.096 1257.7 86.464 1245.02 86.464ZM1218.91 386.752H1197.79V353.728H1209.7C1219.68 353.728 1225.44 348.736 1225.44 338.752V113.728H1264.22V344.512C1264.22 367.936 1246.94 386.752 1218.91 386.752Z" fill={textColor}/>
+      <path d="M1321.52 86.464C1308.47 86.464 1298.1 76.096 1298.1 63.04C1298.1 50.368 1308.47 40 1321.52 40C1334.2 40 1344.18 50.368 1344.18 63.04C1344.18 76.096 1334.2 86.464 1321.52 86.464ZM1340.72 113.728V309.568H1301.94V113.728H1340.72Z" fill={textColor}/>
+    </svg>
+  );
+}
+
 // Lucide icons via CDN — inline SVG components
 const Icon = ({ d, size=16, color="currentColor", strokeWidth=1.5, style={} }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" style={{display:"inline-block",flexShrink:0,...style}}>
@@ -6,6 +26,7 @@ const Icon = ({ d, size=16, color="currentColor", strokeWidth=1.5, style={} }) =
   </svg>
 );
 // Icon paths from Lucide
+
 const IC = {
   search: "M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z",
   mapPin: "M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0zM12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z",
@@ -48,20 +69,6 @@ const IC = {
   grid2:        ["M3 3h7v7H3z","M14 3h7v7h-7z","M14 14h7v7h-7z","M3 14h7v7H3z"],
   thermometer:  ["M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"],
   flame2:       "M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z",
-  // Profession icons (more meaningful)
-  droplets:   ["M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"],
-  zap:        "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
-  paintbrush2:["M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3z","M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"],
-  bricks:     ["M2 6h20v4H2z","M2 14h20v4H2z","M6 6v4","M10 6v4","M14 6v4","M18 6v4","M4 14v4","M8 14v4","M12 14v4","M16 14v4","M20 14v4"],
-  hammer2:    ["M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9","M17.64 15L22 10.64","M20.35 12.35L22 10.7a1 1 0 0 0 0-1.41l-2.63-2.63a1 1 0 0 0-1.42 0L16.3 8.2","M16 13l1.64-1.64"],
-  grid2:      ["M3 3h7v7H3z","M14 3h7v7h-7z","M14 14h7v7h-7z","M3 14h7v7H3z"],
-  thermometer:["M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"],
-  flame2:     "M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z",
-  // Work type icons
-  screwdriver:["M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"],
-  settings:   ["M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16z","M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z","M12 2v2","M12 20v2","M4.93 4.93l1.41 1.41","M17.66 17.66l1.41 1.41","M2 12h2","M20 12h2","M6.34 17.66l-1.41 1.41","M19.07 4.93l-1.41 1.41"],
-  building2:  ["M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18z","M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2","M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2","M10 6h4","M10 10h4","M10 14h4","M10 18h4"],
-  alertOctagon:["M7.86 2h8.28L22 7.86v8.28L16.14 22H7.86L2 16.14V7.86L7.86 2z","M12 8v4","M12 16h.01"],
   // Work type icons
   screwdriver: ["M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"],
   settings: ["M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16z","M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z","M12 2v2","M12 20v2","M4.93 4.93l1.41 1.41","M17.66 17.66l1.41 1.41","M2 12h2","M20 12h2","M6.34 17.66l-1.41 1.41","M19.07 4.93l-1.41 1.41"],
@@ -162,12 +169,19 @@ const CITIES = [
   { id:8, name:"Oujda",      lat:34.6805, lng:-1.9076 },
 ];
 
+const PRICE_LEVELS = [
+  { id: 1, label: "€", desc: "Économique", color: "#16A34A" },
+  { id: 2, label: "€€", desc: "Modéré", color: "#D97706" },
+  { id: 3, label: "€€€", desc: "Premium", color: "#DC2626" },
+];
+
 const WORK_TYPES = [
   { id:"small",     label:"Petit travail",  icon:"screwdriver", desc:"Réparation rapide"   },
   { id:"medium",    label:"Travail moyen",  icon:"settings",    desc:"Quelques heures"     },
   { id:"large",     label:"Grand chantier", icon:"building2",   desc:"Plusieurs jours"     },
   { id:"emergency", label:"Urgence",        icon:"alertOctagon",desc:"Intervention rapide" },
 ];
+
 
 const GRAD = [
   ["#1e3a5f","#2d5a8e"],["#3d1a5f","#6b3fa0"],
@@ -230,17 +244,20 @@ function Stars({ rating, size=13, t }) {
   );
 }
 
+const GRAD_A = ["#6366F1","#EC4899","#F59E0B","#10B981","#3B82F6","#8B5CF6"];
+const GRAD_B = ["#8B5CF6","#F43F5E","#EF4444","#06B6D4","#6366F1","#EC4899"];
+
 function Avatar({ worker, size=48, t }) {
-  const colors = ["#3f3f46","#52525b","#71717a","#a1a1aa","#27272a","#18181b"];
-  const bg = colors[worker.gi % colors.length];
+  const gi = (worker.gi||0) % GRAD_A.length;
+  const bg = `linear-gradient(135deg,${GRAD_A[gi]},${GRAD_B[gi]})`;
   if(worker.avatar_url) return (
     <img src={worker.avatar_url} alt={worker.initials}
       style={{width:size,height:size,borderRadius:"50%",objectFit:"cover",flexShrink:0}}/>
   );
   return (
-    <div style={{width:size,height:size,borderRadius:"50%",background:bg,border:`1px solid ${t.border2}`,
+    <div style={{width:size,height:size,borderRadius:"50%",background:bg,
       display:"flex",alignItems:"center",justifyContent:"center",fontSize:size*.34,
-      fontWeight:600,color:t.text2,flexShrink:0,letterSpacing:"-0.5px"}}>
+      fontWeight:700,color:"#fff",flexShrink:0,letterSpacing:"-0.5px"}}>
       {worker.initials}
     </div>
   );
@@ -325,12 +342,28 @@ function Card({ children, style={}, t, onClick, hover=true }) {
 }
 
 function Modal({ children, onClose, t, maxW=480 }) {
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
   return (
-    <div style={{position:"fixed",inset:0,background:t.overlay,display:"flex",alignItems:"center",
-      justifyContent:"center",zIndex:2000,backdropFilter:"blur(4px)",padding:16}} onClick={onClose}>
-      <div onClick={e=>e.stopPropagation()} style={{background:t.card,border:`1px solid ${t.border}`,
-        borderRadius:12,width:"100%",maxWidth:maxW,maxHeight:"90vh",overflow:"auto",
-        boxShadow:t.shadowLg}}>{children}</div>
+    <div style={{position:"fixed",inset:0,background:t.overlay,display:"flex",
+      alignItems:isMobile?"flex-end":"center",justifyContent:"center",
+      zIndex:2000,backdropFilter:"blur(4px)",padding:isMobile?0:16}} onClick={onClose}>
+      <div onClick={e=>e.stopPropagation()} style={{
+        background:t.card,
+        border:`1px solid ${t.border}`,
+        borderRadius:isMobile?"20px 20px 0 0":"16px",
+        width:"100%",
+        maxWidth:isMobile?"100%":maxW,
+        maxHeight:isMobile?"92vh":"90vh",
+        overflow:"auto",
+        boxShadow:t.shadowLg,
+      }}>
+        {isMobile&&(
+          <div style={{display:"flex",justifyContent:"center",paddingTop:12,paddingBottom:4}}>
+            <div style={{width:36,height:4,borderRadius:2,background:t.border}}/>
+          </div>
+        )}
+        {children}
+      </div>
     </div>
   );
 }
@@ -379,261 +412,604 @@ function Separator({ t }) {
 }
 
 // ─── PHONE AUTH ────────────────────────────────────────────────────────────────
-function PhoneAuth({ onClose, onAuth, mode:initMode="login", t, dbCities=[], dbProfessions=[] }) {
-  const [mode,setMode]=useState(initMode); // login | register
-  const [step,setStep]=useState("phone"); // phone | otp | name | pending
-  const [phone,setPhone]=useState("");
-  const [otp,setOtp]=useState(["","","","","",""]);
-  const [name,setName]=useState("");
-  const [bio,setBio]=useState("");
-  const [professions,setProfessions]=useState([]);
-  const [city,setCity]=useState("");
-  const [err,setErr]=useState("");
-  const [saving,setSaving]=useState(false);
-  const refs=useRef([]);
+// ─── RESET PASSWORD MODAL ────────────────────────────────────────────────────
+function ResetPasswordModal({ onClose, t }) {
+  const [pwd,  setPwd]  = useState("");
+  const [pwd2, setPwd2] = useState("");
+  const [show, setShow] = useState(false);
+  const [err,  setErr]  = useState("");
+  const [done, setDone] = useState(false);
+  const [saving, setSaving] = useState(false);
 
-  const fmtPhone = v => { const d=v.replace(/\D/g,"").slice(0,10); if(d.length<=4)return d; if(d.length<=7)return `${d.slice(0,4)} ${d.slice(4)}`; return `${d.slice(0,4)} ${d.slice(4,7)} ${d.slice(7)}`; };
-
-  const sendOTP = async () => {
-    const digits = phone.replace(/\D/g,"");
-    if(digits.length<10){setErr("Numéro invalide (10 chiffres)");return;}
-    setErr(""); setSaving(true);
-    const digits0 = digits.startsWith("0") ? digits.slice(1) : digits;
-    const fullPhone = "+212" + digits0;
-    const { error } = await supabase.auth.signInWithOtp({ phone: fullPhone });
-    setSaving(false);
-    if(error){ setErr("Erreur SMS: "+error.message); return; }
-    setStep("otp");
+  const inp = {
+    width:"100%", boxSizing:"border-box",
+    background:t.bg2, border:`1px solid ${t.border}`,
+    borderRadius:10, padding:"12px 14px",
+    color:t.text, fontSize:15, outline:"none", fontFamily:"inherit",
+  };
+  const lbl = {
+    fontSize:11, fontWeight:700, color:t.text3,
+    display:"block", marginBottom:6, letterSpacing:"0.5px", textTransform:"uppercase",
   };
 
-  const checkOTP = async () => {
-    if(otp.join("").length<6)return;
+  const doReset = async () => {
+    if(pwd.length < 6){ setErr("Mot de passe minimum 6 caractères"); return; }
+    if(pwd !== pwd2){ setErr("Les mots de passe ne correspondent pas"); return; }
     setSaving(true); setErr("");
-    const digits = phone.replace(/\D/g,"");
-    const digits0 = digits.startsWith("0") ? digits.slice(1) : digits;
-    const fullPhone = "+212" + digits0;
-    const { data, error } = await supabase.auth.verifyOtp({ phone: fullPhone, token: otp.join(""), type:"sms" });
+    const { error } = await supabase.auth.updateUser({ password: pwd });
     setSaving(false);
-    if(error){ setErr("Code incorrect ou expiré"); return; }
-    if(mode==="register") setStep("name");
-    else {
-      // Check if this phone belongs to an existing worker
-      // Try all phone formats: 612345678, 0612345678, full digits
-      const phoneVariants = [...new Set([digits0, "0"+digits0, digits, "0"+digits])];
-      let worker = null;
-      for(const ph of phoneVariants){
-        const { data, error:pErr } = await supabase
-          .from("workers")
-          .select(`*, city:cities(name), worker_professions(profession:professions(*)), reviews(*), portfolio_photos(*)`)
-          .eq("phone", ph)
-          .maybeSingle();
-        if(data && !pErr){ worker = data; break; }
-      }
-      if(worker){
-        const shaped = {
-          ...worker,
-          city: worker.city?.name||"",
-          professions:(worker.worker_professions||[]).map(wp=>wp.profession?.id).filter(Boolean),
-          professionData:(worker.worker_professions||[]).map(wp=>wp.profession).filter(Boolean),
-          reviews:(worker.reviews||[]).map(r=>({...r,author:r.author_name,workType:r.work_type,date:r.created_at?.split("T")[0]})),
-          portfolio:(worker.portfolio_photos||[]).map((p,j)=>({...p,gi:j%6})),
-          initials:worker.name.trim().split(" ").slice(0,2).map(n=>n[0]||"").join("").toUpperCase(),
-          gi:0,
-        };
-        const role = worker.status==="approved"?"worker":worker.status==="pending"?"pending":"rejected";
-        onAuth({ name:worker.name, phone:digits0, role, status:worker.status, id:worker.id, workerData:shaped, avatarUrl:worker.avatar_url||null });
-      } else {
-        // New consumer - ask for their name
-        setStep("name");
-      }
-    }
+    if(error){ setErr(error.message); return; }
+    setDone(true);
   };
-
-  const handleOtp = (val,idx) => {
-    const v=val.replace(/\D/g,"").slice(0,1);
-    const next=[...otp]; next[idx]=v; setOtp(next);
-    if(v&&idx<5) refs.current[idx+1]?.focus();
-    if(otp.join("").length===5&&v) setTimeout(checkOTP,200);
-  };
-
-  const submitRegister = async () => {
-    if(!name.trim()){setErr("Entrez votre nom");return;}
-    if(mode==="register"&&professions.length===0){setErr("Sélectionnez au moins un métier");return;}
-    if(mode==="register"&&!city){setErr("Sélectionnez votre ville");return;}
-    if(mode==="register"){
-      setSaving(true); setErr("");
-      try {
-        // Find city UUID from DB cities
-        const cityRow = dbCities.find(c=>c.name===city);
-        if(!cityRow) throw new Error("Ville introuvable dans la base de données");
-
-        // Insert worker with status=pending
-        const { data:newWorker, error:wErr } = await supabase
-          .from("workers")
-          .insert({ name:name.trim(), phone:phone.replace(/\D/g,""), city_id:cityRow.id, bio:bio.trim(), available:false, status:"pending" })
-          .select().single();
-        if(wErr) throw wErr;
-
-        // Link professions — professions state holds UUIDs from dbProfessions
-        if(professions.length && newWorker){
-          const { error:pErr } = await supabase.from("worker_professions").insert(
-            professions.map(pid=>({ worker_id:newWorker.id, profession_id:pid }))
-          );
-          if(pErr) throw pErr;
-        }
-        setStep("pending");
-      } catch(e){
-        if(e.message?.includes("workers_phone_key"))
-          setErr("Ce numéro est déjà inscrit. Connectez-vous plutôt.");
-        else
-          setErr("Erreur: "+e.message);
-      }
-      setSaving(false);
-    } else {
-      // Consumer login - just set name and auth
-      onAuth({name:name.trim(), phone:phone.replace(/\D/g,"").replace(/^0/,""), role:"consumer", status:"active"});
-    }
-  };
-
-  const toggleProf = pid => { const s=String(pid); setProfessions(p=>p.includes(s)?p.filter(x=>x!==s):[...p,s]); };
 
   return (
-    <Modal onClose={onClose} t={t} maxW={440}>
-      <div style={{padding:"32px 28px"}}>
-        {/* Header */}
-        <div style={{textAlign:"center",marginBottom:28}}>
-          <div style={{width:48,height:48,borderRadius:10,background:t.bg2,border:`1px solid ${t.border}`,
-            display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 14px"}}>
-            <Icon d={step==="phone"?IC.phone:step==="otp"?IC.shield:step==="pending"?IC.clock:IC.check}
-              size={20} color={t.text2}/>
-          </div>
-          <h2 style={{margin:"0 0 8px",fontSize:22,fontWeight:900,color:t.text}}>
-            {step==="phone"?"Connexion / Inscription":step==="otp"?"Vérification":step==="pending"?"Demande envoyée!":step==="name"&&mode==="register"?"Votre profil":"Votre nom"}
-          </h2>
-          <p style={{color:t.text2,margin:0,fontSize:14,lineHeight:1.6}}>
-            {step==="phone"?"Entrez votre numéro marocain":step==="otp"?`Code envoyé au +212 ${phone.replace(/\D/g,"").slice(1)}`:step==="pending"?"Votre compte artisan est en cours de validation":step==="name"&&mode==="register"?"Complétez votre profil artisan":"Comment vous appelez-vous?"}
-          </p>
-        </div>
-
-        {/* Toggle consumer / worker for register */}
-        {step==="phone"&&(
-          <div style={{display:"flex",background:t.bg2,borderRadius:12,padding:4,marginBottom:20,border:`1px solid ${t.border}`}}>
-            {[{id:"login",l:"Se connecter"},{id:"register",l:"S'inscrire artisan"}].map(m=>(
-              <button key={m.id} onClick={()=>setMode(m.id)}
-                style={{flex:1,padding:"8px",borderRadius:6,border:"none",cursor:"pointer",
-                  fontWeight:500,fontSize:12,background:mode===m.id?t.bg3:"transparent",
-                  color:mode===m.id?t.text:t.text3,transition:"all .15s",fontFamily:"inherit"}}>
-                {m.l}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* STEP: phone */}
-        {step==="phone"&&(
-          <div style={{display:"flex",flexDirection:"column",gap:16}}>
-            <div style={{display:"flex",border:`1.5px solid ${t.border}`,borderRadius:10,overflow:"hidden",background:t.input}}>
-              <div style={{padding:"10px 12px",background:t.bg2,borderRight:`1px solid ${t.border}`,fontSize:13,fontWeight:500,color:t.text2,whiteSpace:"nowrap",display:"flex",alignItems:"center",gap:5}}>
-                <span style={{fontSize:14}}>🇲🇦</span>+212
-              </div>
-              <input value={phone} onChange={e=>setPhone(fmtPhone(e.target.value))} placeholder="06XX XX XX XX" maxLength={12}
-                style={{flex:1,background:"transparent",border:"none",padding:"11px 14px",color:t.text,fontSize:15,outline:"none",fontFamily:"inherit",letterSpacing:"0.5px"}}/>
-            </div>
-            {err&&<div style={{background:t.dangerLight,border:`1px solid ${t.danger}40`,borderRadius:8,padding:"9px 12px",color:t.danger,fontSize:13}}>{err}</div>}
-            <Btn t={t} size="lg" onClick={sendOTP} style={{width:"100%"}} disabled={saving}>{saving?"Envoi du SMS...":"Recevoir le code →"}</Btn>
-            <p style={{color:t.text3,fontSize:11,textAlign:"center",lineHeight:1.6,margin:"4px 0 0"}}>
-              En continuant, vous acceptez nos{" "}
-              <a href="/terms.html" target="_blank" style={{color:t.primary,textDecoration:"none"}}>Conditions d'utilisation</a>
-              {" "}et notre{" "}
-              <a href="/privacy.html" target="_blank" style={{color:t.primary,textDecoration:"none"}}>Politique de confidentialité</a>.
+    <Modal onClose={onClose} t={t} maxW={420}>
+      <div style={{padding:"24px 24px 32px"}}>
+        {done ? (
+          <div style={{textAlign:"center",padding:"8px 0"}}>
+            <div style={{fontSize:52,marginBottom:14}}>✅</div>
+            <h2 style={{margin:"0 0 10px",fontSize:20,fontWeight:800,color:t.text}}>
+              Mot de passe mis à jour !
+            </h2>
+            <p style={{color:t.text2,fontSize:14,lineHeight:1.7,margin:"0 0 24px"}}>
+              Votre mot de passe a été modifié avec succès.<br/>
+              Vous pouvez maintenant vous connecter.
             </p>
+            <Btn t={t} style={{width:"100%"}} onClick={onClose}>Se connecter</Btn>
           </div>
-        )}
-
-        {/* STEP: otp */}
-        {step==="otp"&&(
-          <div style={{display:"flex",flexDirection:"column",gap:20}}>
-            <div style={{display:"flex",gap:8,justifyContent:"center"}}>
-              {otp.map((d,i)=>(
-                <input key={i} ref={el=>refs.current[i]=el} value={d} onChange={e=>handleOtp(e.target.value,i)} onKeyDown={e=>{if(e.key==="Backspace"&&!d&&i>0)refs.current[i-1]?.focus();}} inputMode="numeric" maxLength={1}
-                  style={{width:52,height:58,textAlign:"center",fontSize:24,fontWeight:800,background:t.input,border:`2px solid ${d?t.primary:t.border}`,borderRadius:12,color:t.text,outline:"none",fontFamily:"inherit",transition:"border-color .15s"}}/>
-              ))}
-            </div>
-            <Btn t={t} style={{width:"100%"}} onClick={checkOTP} disabled={otp.join("").length<6}>Confirmer →</Btn>
-            <button onClick={()=>setStep("phone")} style={{background:"none",border:"none",color:t.text3,cursor:"pointer",fontSize:13,fontFamily:"inherit"}}>← Changer de numéro</button>
-            <div style={{background:t.bg2,borderRadius:8,padding:"9px 12px",border:`1px solid ${t.border}`,fontSize:11,color:t.text3,textAlign:"center"}}>Le code SMS peut prendre 1-2 minutes. Vérifiez que votre numéro commence par 06 ou 07.</div>
-          </div>
-        )}
-
-        {/* STEP: name + profile (register) */}
-        {step==="name"&&(
-          <div style={{display:"flex",flexDirection:"column",gap:14}}>
-            <Input t={t} label="NOM COMPLET *" placeholder="Ex: Youssef El Fassi" value={name} onChange={e=>setName(e.target.value)} leftIcon={<Icon d={IC.user} size={14} color={t.text3}/>}/>
-            {mode==="register"&&(
-              <>
-                <div>
-                  <label style={{fontSize:11,fontWeight:700,color:t.text3,letterSpacing:"0.6px",textTransform:"uppercase",display:"block",marginBottom:8}}>MÉTIER(S) *</label>
-                  <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6}}>
-                    {(dbProfessions.length?dbProfessions:PROFESSIONS).map(p=>(
-                      <button key={p.id} onClick={()=>toggleProf(p.id)} style={{padding:"8px 4px",borderRadius:10,border:`1px solid ${professions.includes(String(p.id))?p.color:t.border}`,background:professions.includes(String(p.id))?p.color+"18":t.bg2,color:professions.includes(String(p.id))?p.color:t.text3,cursor:"pointer",textAlign:"center",fontSize:9,fontWeight:700,fontFamily:"inherit"}}>
-                        <div style={{fontSize:18}}>{p.icon}</div>
-                        <div style={{marginTop:3}}>{p.name}</div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <label style={{fontSize:11,fontWeight:700,color:t.text3,letterSpacing:"0.6px",textTransform:"uppercase",display:"block",marginBottom:6}}>VILLE *</label>
-                  <select value={city} onChange={e=>setCity(e.target.value)} style={{width:"100%",background:t.input,border:`1.5px solid ${t.border}`,borderRadius:10,padding:"11px 12px",color:city?t.text:t.text3,fontSize:14,fontFamily:"inherit",outline:"none"}}>
-                    <option value="">Sélectionner votre ville...</option>
-                    {(dbCities.length?dbCities:CITIES).map(c=><option key={c.id} value={c.name}>{c.name}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label style={{fontSize:11,fontWeight:700,color:t.text3,letterSpacing:"0.6px",textTransform:"uppercase",display:"block",marginBottom:6}}>BIO <span style={{color:t.text3,fontWeight:400,textTransform:"none"}}>(optionnel)</span></label>
-                  <textarea value={bio} onChange={e=>setBio(e.target.value)} placeholder="Décrivez votre expérience, spécialités, années d'expérience..." rows={3}
-                    style={{width:"100%",boxSizing:"border-box",background:t.input,border:`1.5px solid ${t.border}`,borderRadius:10,padding:"11px 12px",color:t.text,fontSize:14,resize:"none",fontFamily:"inherit",outline:"none"}}/>
-                </div>
-              </>
-            )}
-            {err&&<div style={{background:t.dangerLight,border:`1px solid ${t.danger}40`,borderRadius:8,padding:"9px 12px",color:t.danger,fontSize:13}}>{err}</div>}
-            <Btn t={t} size="lg" onClick={submitRegister} style={{width:"100%"}} disabled={saving}>{saving?"Envoi en cours...":mode==="register"?"Envoyer ma demande →":"Commencer →"}</Btn>
-            {mode==="register"&&(
-              <p style={{color:t.text3,fontSize:11,textAlign:"center",lineHeight:1.6,margin:"4px 0 0"}}>
-                En soumettant votre demande, vous acceptez nos{" "}
-                <a href="/terms.html" target="_blank" style={{color:t.primary,textDecoration:"none"}}>Conditions d'utilisation</a>
-                {" "}et notre{" "}
-                <a href="/privacy.html" target="_blank" style={{color:t.primary,textDecoration:"none"}}>Politique de confidentialité</a>.
-              </p>
-            )}
-          </div>
-        )}
-
-        {/* STEP: pending */}
-        {step==="pending"&&(
-          <div style={{textAlign:"center"}}>
-            <div style={{background:`linear-gradient(135deg,${t.primary}15,${t.secondary}15)`,borderRadius:16,padding:"24px",border:`1px solid ${t.primary}30`,marginBottom:20}}>
-              <div style={{fontSize:48,marginBottom:12}}>⏳</div>
-              <h3 style={{margin:"0 0 8px",color:t.text,fontSize:17,fontWeight:800}}>Demande reçue!</h3>
-              <p style={{color:t.text2,fontSize:13,lineHeight:1.7,margin:0}}>
-                Votre profil artisan est en cours de vérification. Vous recevrez un <strong style={{color:t.text}}>SMS de confirmation</strong> dans les <strong style={{color:t.primary}}>24 heures</strong>.
+        ) : (
+          <div style={{display:"flex",flexDirection:"column",gap:16}}>
+            <div>
+              <h2 style={{margin:"0 0 4px",fontSize:22,fontWeight:800,color:t.text}}>
+                Nouveau mot de passe
+              </h2>
+              <p style={{margin:0,color:t.text3,fontSize:13}}>
+                Choisissez un mot de passe sécurisé
               </p>
             </div>
-            <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:20}}>
-              {["Vérification de votre numéro","Validation par notre équipe (24h)","SMS de confirmation","Accès à votre espace artisan"].map((s,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background:i<1?t.successLight:t.bg2,border:`1px solid ${i<1?t.success+"40":t.border}`,borderRadius:10}}>
-                  <span style={{fontSize:14}}>{s.split(" ")[0]}</span>
-                  <span style={{fontSize:13,color:i<1?t.success:t.text2,fontWeight:i<1?700:400}}>{s.split(" ").slice(1).join(" ")}</span>
+            <div style={{display:"flex",flexDirection:"column",gap:12}}>
+              <div>
+                <label style={lbl}>Nouveau mot de passe</label>
+                <div style={{position:"relative"}}>
+                  <input value={pwd} onChange={e=>setPwd(e.target.value)}
+                    type={show?"text":"password"} placeholder="Minimum 6 caractères"
+                    style={{...inp,paddingRight:60}}
+                    onKeyDown={e=>e.key==="Enter"&&doReset()}/>
+                  <button type="button" onClick={()=>setShow(v=>!v)}
+                    style={{position:"absolute",right:14,top:"50%",transform:"translateY(-50%)",
+                      background:"none",border:"none",color:t.text3,fontSize:11,
+                      cursor:"pointer",fontFamily:"inherit"}}>
+                    {show?"Cacher":"Voir"}
+                  </button>
                 </div>
-              ))}
+              </div>
+              <div>
+                <label style={lbl}>Confirmer le mot de passe</label>
+                <input value={pwd2} onChange={e=>setPwd2(e.target.value)}
+                  type={show?"text":"password"} placeholder="Répétez le mot de passe"
+                  style={inp} onKeyDown={e=>e.key==="Enter"&&doReset()}/>
+                {pwd2&&pwd!==pwd2&&(
+                  <span style={{fontSize:11,color:t.danger,marginTop:4,display:"block"}}>
+                    Les mots de passe ne correspondent pas
+                  </span>
+                )}
+                {pwd2&&pwd===pwd2&&pwd.length>=6&&(
+                  <span style={{fontSize:11,color:"#10B981",marginTop:4,display:"block"}}>
+                    ✓ Les mots de passe correspondent
+                  </span>
+                )}
+              </div>
             </div>
-            <Btn t={t} style={{width:"100%"}} onClick={onClose}>Fermer</Btn>
+            {err&&(
+              <div style={{background:t.dangerLight,border:`1px solid ${t.danger}40`,
+                borderRadius:8,padding:"10px 14px",color:t.danger,fontSize:13}}>{err}</div>
+            )}
+            <Btn t={t} size="lg" onClick={doReset} style={{width:"100%"}}
+              disabled={saving||pwd!==pwd2||pwd.length<6}>
+              {saving?"Mise à jour...":"Confirmer le nouveau mot de passe →"}
+            </Btn>
           </div>
         )}
       </div>
     </Modal>
   );
 }
+
+function PhoneAuth({ onClose, onAuth, mode:initMode="login", t, dbCities=[], dbProfessions=[] }) {
+  const [step, setStep]         = useState(initMode==="register" ? "choose" : "login");
+  const [email, setEmail]       = useState("");
+  const [password, setPassword] = useState("");
+  const [showPwd, setShowPwd]   = useState(false);
+  const [name, setName]         = useState("");
+  const [phone, setPhone]       = useState("");
+  const [bio, setBio]           = useState("");
+  const [profs, setProfs]       = useState([]);
+  const [city, setCity]         = useState("");
+  const [price, setPrice]       = useState(0);
+  const [err, setErr]           = useState("");
+  const [saving, setSaving]     = useState(false);
+
+  const go = s => { setErr(""); setStep(s); };
+  const toggleP = pid => { const s=String(pid); setProfs(p=>p.includes(s)?p.filter(x=>x!==s):[...p,s]); };
+  const profList = dbProfessions.length ? dbProfessions : PROFESSIONS;
+  const cityList = dbCities.length ? dbCities : CITIES;
+
+  // Shared input style — same as login spacing the user likes
+  const inp = {
+    width:"100%", boxSizing:"border-box",
+    background:t.bg2, border:`1px solid ${t.border}`,
+    borderRadius:10, padding:"12px 14px",
+    color:t.text, fontSize:15, outline:"none", fontFamily:"inherit",
+  };
+  const lbl = {
+    fontSize:11, fontWeight:700, color:t.text3,
+    display:"block", marginBottom:6, letterSpacing:"0.5px", textTransform:"uppercase",
+  };
+
+  // ── LOGIN ──────────────────────────────────────────────────────────────────
+  const doLogin = async () => {
+    if(!email.trim()||!password){ setErr("Email et mot de passe requis"); return; }
+    setSaving(true); setErr("");
+
+    // Check worker status FIRST (before auth, works even unauthenticated via public select)
+    const { data:workerCheck } = await supabase
+      .from("workers")
+      .select("status, name")
+      .eq("email", email.trim().toLowerCase())
+      .maybeSingle();
+
+    if(workerCheck?.status==="pending"){
+      setErr("PENDING");
+      setSaving(false); return;
+    }
+    if(workerCheck?.status==="rejected"){
+      setErr("Votre demande a été refusée. Contactez-nous pour plus d'informations.");
+      setSaving(false); return;
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({ email:email.trim(), password });
+    if(error){
+      setErr("Email ou mot de passe incorrect");
+      setSaving(false); return;
+    }
+    const { data:worker } = await supabase
+      .from("workers")
+      .select(`*, city:cities(name), worker_professions(profession:professions(*)), reviews(*), portfolio_photos(*)`)
+      .eq("email", email.trim().toLowerCase()).maybeSingle();
+    if(worker){
+      const shaped = {
+        ...worker, city:worker.city?.name||"",
+        professions:(worker.worker_professions||[]).map(wp=>wp.profession?.id).filter(Boolean),
+        professionData:(worker.worker_professions||[]).map(wp=>wp.profession).filter(Boolean),
+        reviews:(worker.reviews||[]).map(r=>({...r,author:r.author_name,workType:r.work_type,date:r.created_at?.split("T")[0]})),
+        portfolio:(worker.portfolio_photos||[]).map((p,j)=>({...p,gi:j%6})),
+        initials:worker.name.trim().split(" ").slice(0,2).map(n=>n[0]||"").join("").toUpperCase(),gi:0,
+      };
+      const role = worker.status==="approved"?"worker":worker.status==="pending"?"pending":"rejected";
+      onAuth({ name:worker.name, email:email.trim(), role, status:worker.status, id:worker.id, workerData:shaped });
+    } else {
+      // Not a worker — look up user_profiles
+      const { data:profile } = await supabase
+        .from("user_profiles")
+        .select("name, email")
+        .eq("email", email.trim().toLowerCase())
+        .maybeSingle();
+      const displayName = profile?.name || email.trim().split("@")[0];
+      onAuth({ name:displayName, email:email.trim(), role:"consumer", status:"active" });
+    }
+    setSaving(false);
+  };
+
+  // ── FORGOT PASSWORD ───────────────────────────────────────────────────────
+  const doForgot = async () => {
+    if(!email.trim()){ setErr("Entrez votre email"); return; }
+    setSaving(true); setErr("");
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: window.location.origin + "?reset=1",
+    });
+    setSaving(false);
+    if(error){ setErr(error.message); return; }
+    go("reset_sent");
+  };
+
+  // ── REGISTER WORKER ────────────────────────────────────────────────────────
+  const doRegisterWorker = async () => {
+    if(!profs.length){ setErr("Sélectionnez au moins un métier"); return; }
+    if(!city){ setErr("Sélectionnez votre ville"); return; }
+    setSaving(true); setErr("");
+    const { error:signUpErr } = await supabase.auth.signUp({
+      email:email.trim(), password, options:{data:{name:name.trim()}}
+    });
+    if(signUpErr){ setErr(signUpErr.message); setSaving(false); return; }
+    try {
+      const cityRow = cityList.find(c=>c.name===city);
+      if(!cityRow) throw new Error("Ville introuvable");
+      const { data:newW, error:wErr } = await supabase
+        .from("workers")
+        .insert({
+          name:name.trim(), email:email.trim().toLowerCase(),
+          phone:phone.trim(), city_id:cityRow.id,
+          bio:bio.trim(), available:false, status:"pending", price_level:price||null,
+        }).select().single();
+      if(wErr) throw wErr;
+      if(profs.length && newW){
+        await supabase.from("worker_professions").insert(
+          profs.map(pid=>({ worker_id:newW.id, profession_id:pid }))
+        );
+      }
+      go("pending");
+    } catch(e){
+      setErr(e.message?.includes("workers_email_key")?"Cet email est déjà utilisé.":"Erreur: "+e.message);
+    }
+    setSaving(false);
+  };
+
+  // ── REGISTER CLIENT ────────────────────────────────────────────────────────
+  const doRegisterClient = async () => {
+    if(!name.trim()){ setErr("Entrez votre prénom"); return; }
+    if(!email.trim()){ setErr("Entrez votre email"); return; }
+    if(password.length<6){ setErr("Mot de passe minimum 6 caractères"); return; }
+    setSaving(true); setErr("");
+    const { data:signUpData, error } = await supabase.auth.signUp({
+      email:email.trim(), password, options:{data:{name:name.trim()}}
+    });
+    if(error){ setErr(error.message); setSaving(false); return; }
+    // Insert into user_profiles (consumers table)
+    const userId = signUpData?.user?.id;
+    if(userId){
+      await supabase.from("user_profiles").upsert({
+        id: userId,
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+      });
+    }
+    onAuth({ name:name.trim(), email:email.trim(), role:"consumer", status:"active" });
+    setSaving(false);
+  };
+
+  // ── SHARED INLINE PIECES (not components — avoids focus loss on re-render) ──
+  const pwdField = (placeholder="••••••••", onEnter=null) => (
+    <div style={{position:"relative"}}>
+      <input value={password} onChange={e=>setPassword(e.target.value)}
+        type={showPwd?"text":"password"} placeholder={placeholder}
+        style={{...inp,paddingRight:60}}
+        onKeyDown={e=>{ if(e.key==="Enter"&&onEnter) onEnter(); }}/>
+      <button type="button" onClick={()=>setShowPwd(v=>!v)}
+        style={{position:"absolute",right:14,top:"50%",transform:"translateY(-50%)",
+          background:"none",border:"none",color:t.text3,fontSize:11,
+          cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>
+        {showPwd?"Cacher":"Voir"}
+      </button>
+    </div>
+  );
+
+  const errBox = err==="PENDING" ? (
+    <div style={{background:"#FEF3C7",border:"1px solid #D9770640",borderRadius:10,
+      padding:"14px 16px",display:"flex",flexDirection:"column",gap:6}}>
+      <div style={{fontWeight:700,fontSize:14,color:"#92400E"}}>⏳ Compte en cours de vérification</div>
+      <div style={{fontSize:13,color:"#78350F",lineHeight:1.6}}>
+        Votre demande artisan est bien reçue. Notre équipe vérifie votre profil pour garantir la qualité d'AloAji.
+        Vous recevrez un <strong>email de confirmation</strong> dès validation. Merci de votre patience !
+      </div>
+    </div>
+  ) : err ? (
+    <div style={{background:t.dangerLight,border:`1px solid ${t.danger}40`,
+      borderRadius:8,padding:"10px 14px",color:t.danger,fontSize:13}}>{err}</div>
+  ) : null;
+
+  const stepBar = (n) => (
+    <div style={{display:"flex",gap:6,marginBottom:4}}>
+      {[1,2].map(i=>(
+        <div key={i} style={{flex:1,height:3,borderRadius:2,
+          background:i<=n?t.primary:t.border,transition:"background .3s"}}/>
+      ))}
+    </div>
+  );
+
+  const backBtn = (to) => (
+    <button onClick={()=>go(to)} style={{background:"none",border:"none",cursor:"pointer",
+      padding:0,display:"flex",alignItems:"center",gap:6,color:t.text3,
+      fontFamily:"inherit",fontSize:13,marginBottom:2}}>
+      <Icon d={IC.arrowLeft} size={15} color={t.text3}/>Retour
+    </button>
+  );
+
+  return (
+    <Modal onClose={onClose} t={t} maxW={440}>
+      <div style={{padding:"24px 24px 32px"}}>
+
+        {/* ── LOGIN ─────────────────────────────────────────────────── */}
+        {step==="login"&&(
+          <div style={{display:"flex",flexDirection:"column",gap:16}}>
+            <div>
+              <h2 style={{margin:"0 0 4px",fontSize:22,fontWeight:800,color:t.text}}>Connexion</h2>
+              <p style={{margin:0,color:t.text3,fontSize:13}}>Accédez à votre espace</p>
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:12}}>
+              <div>
+                <label style={lbl}>Email</label>
+                <input value={email} onChange={e=>setEmail(e.target.value)} type="email"
+                  placeholder="votre@email.com" style={inp}
+                  onKeyDown={e=>e.key==="Enter"&&doLogin()}/>
+              </div>
+              <div>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:6}}>
+                <label style={{...lbl,marginBottom:0}}>Mot de passe</label>
+                <button onClick={()=>go("forgot")} style={{background:"none",border:"none",
+                  color:t.text3,fontSize:11,cursor:"pointer",fontFamily:"inherit",
+                  textDecoration:"underline",textUnderlineOffset:3,padding:0}}>
+                  Mot de passe oublié ?
+                </button>
+              </div>
+                {pwdField("••••••••", doLogin)}
+              </div>
+            </div>
+            {errBox}
+            <Btn t={t} size="lg" onClick={doLogin} style={{width:"100%"}} disabled={saving}>
+              {saving?"Connexion...":"Se connecter →"}
+            </Btn>
+            <div style={{textAlign:"center",paddingTop:8,borderTop:`1px solid ${t.border}`}}>
+              <span style={{color:t.text3,fontSize:13}}>Pas encore de compte ? </span>
+              <button onClick={()=>go("choose")} style={{background:"none",border:"none",
+                color:t.primary,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
+                Créer un compte
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ── FORGOT PASSWORD ──────────────────────────────────────── */}
+        {step==="forgot"&&(
+          <div style={{display:"flex",flexDirection:"column",gap:16}}>
+            {backBtn("login")}
+            <div>
+              <h2 style={{margin:"0 0 4px",fontSize:22,fontWeight:800,color:t.text}}>
+                Mot de passe oublié
+              </h2>
+              <p style={{margin:0,color:t.text3,fontSize:13}}>
+                Entrez votre email — nous vous enverrons un lien pour réinitialiser votre mot de passe.
+              </p>
+            </div>
+            <div>
+              <label style={lbl}>Email</label>
+              <input value={email} onChange={e=>setEmail(e.target.value)} type="email"
+                placeholder="votre@email.com" style={inp}
+                onKeyDown={e=>e.key==="Enter"&&doForgot()}/>
+            </div>
+            {errBox}
+            <Btn t={t} size="lg" style={{width:"100%"}} onClick={doForgot} disabled={saving}>
+              {saving?"Envoi en cours...":"Envoyer le lien →"}
+            </Btn>
+          </div>
+        )}
+
+        {/* ── RESET SENT ────────────────────────────────────────────── */}
+        {step==="reset_sent"&&(
+          <div style={{textAlign:"center",padding:"8px 0"}}>
+            <div style={{fontSize:52,marginBottom:14}}>📬</div>
+            <h2 style={{margin:"0 0 10px",fontSize:20,fontWeight:800,color:t.text}}>
+              Email envoyé !
+            </h2>
+            <p style={{color:t.text2,fontSize:14,lineHeight:1.7,margin:"0 0 6px"}}>
+              Un lien de réinitialisation a été envoyé à
+            </p>
+            <p style={{color:t.primary,fontWeight:700,fontSize:14,margin:"0 0 24px",wordBreak:"break-all"}}>
+              {email}
+            </p>
+            <p style={{color:t.text3,fontSize:12,lineHeight:1.6,margin:"0 0 24px"}}>
+              Vérifiez vos spams si vous ne le recevez pas.<br/>
+              Le lien expire dans <strong>1 heure</strong>.
+            </p>
+            <Btn t={t} style={{width:"100%"}} onClick={onClose}>Fermer</Btn>
+            <button onClick={()=>go("login")} style={{marginTop:12,background:"none",border:"none",
+              color:t.text3,fontSize:12,cursor:"pointer",fontFamily:"inherit",
+              textDecoration:"underline",textUnderlineOffset:3}}>
+              Retour à la connexion
+            </button>
+          </div>
+        )}
+
+        {/* ── CHOOSE TYPE ───────────────────────────────────────────── */}
+        {step==="choose"&&(
+          <div style={{display:"flex",flexDirection:"column",gap:16}}>
+            {backBtn("login")}
+            <div>
+              <h2 style={{margin:"0 0 4px",fontSize:22,fontWeight:800,color:t.text}}>Créer un compte</h2>
+              <p style={{margin:0,color:t.text3,fontSize:13}}>Qui êtes-vous ?</p>
+            </div>
+            {[
+              {to:"w1",emoji:"🔨",title:"Je suis artisan",sub:"Créez votre profil et soyez contacté par des clients"},
+              {to:"client",emoji:"🏠",title:"Je cherche un artisan",sub:"Trouvez, sauvegardez et notez des artisans"},
+            ].map(opt=>(
+              <button key={opt.to} onClick={()=>go(opt.to)}
+                style={{padding:"16px 18px",borderRadius:14,border:`1.5px solid ${t.border}`,
+                  background:t.bg2,cursor:"pointer",textAlign:"left",fontFamily:"inherit",
+                  display:"flex",gap:14,alignItems:"center"}}>
+                <div style={{fontSize:28,flexShrink:0}}>{opt.emoji}</div>
+                <div style={{flex:1}}>
+                  <div style={{fontWeight:700,fontSize:15,color:t.text,marginBottom:2}}>{opt.title}</div>
+                  <div style={{fontSize:12,color:t.text3,lineHeight:1.5}}>{opt.sub}</div>
+                </div>
+                <Icon d={IC.chevronRight} size={15} color={t.text3} style={{flexShrink:0}}/>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* ── WORKER STEP 1 ─────────────────────────────────────────── */}
+        {step==="w1"&&(
+          <div style={{display:"flex",flexDirection:"column",gap:16}}>
+            {backBtn("choose")}
+            <div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:10}}>
+                <h2 style={{margin:0,fontSize:22,fontWeight:800,color:t.text}}>Compte artisan</h2>
+                <span style={{fontSize:12,color:t.text3,fontWeight:500}}>1 / 2</span>
+              </div>
+              {stepBar(1)}
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:12}}>
+              <div>
+                <label style={lbl}>Nom complet</label>
+                <input value={name} onChange={e=>setName(e.target.value)}
+                  placeholder="Youssef El Fassi" style={inp}/>
+              </div>
+              <div>
+                <label style={lbl}>Téléphone</label>
+                <input value={phone} onChange={e=>setPhone(e.target.value)}
+                  type="tel" placeholder="06 12 34 56 78" style={inp}/>
+                <span style={{fontSize:11,color:t.text3,marginTop:5,display:"block"}}>
+                  Utilisé pour WhatsApp et appels clients
+                </span>
+              </div>
+              <div>
+                <label style={lbl}>Email</label>
+                <input value={email} onChange={e=>setEmail(e.target.value)} type="email"
+                  placeholder="votre@email.com" style={inp}/>
+              </div>
+              <div>
+                <label style={lbl}>Mot de passe</label>
+                {pwdField("Minimum 6 caractères")}
+              </div>
+            </div>
+            {errBox}
+            <Btn t={t} size="lg" style={{width:"100%"}} disabled={saving} onClick={async()=>{
+              if(!name.trim()){ setErr("Entrez votre nom complet"); return; }
+              if(!phone.trim()){ setErr("Entrez votre numéro de téléphone"); return; }
+              if(!email.trim()){ setErr("Entrez votre email"); return; }
+              if(password.length<6){ setErr("Mot de passe minimum 6 caractères"); return; }
+              // Check if email already in use BEFORE going to step 2
+              setSaving(true); setErr("");
+              const { data:existing } = await supabase
+                .from("workers").select("status").eq("email",email.trim().toLowerCase()).maybeSingle();
+              if(existing){
+                if(existing.status==="pending") setErr("PENDING");
+                else setErr("Cet email est déjà utilisé. Connectez-vous.");
+                setSaving(false); return;
+              }
+              setSaving(false);
+              go("w2");
+            }}>Continuer →</Btn>
+          </div>
+        )}
+
+        {/* ── WORKER STEP 2 ─────────────────────────────────────────── */}
+        {step==="w2"&&(
+          <div style={{display:"flex",flexDirection:"column",gap:16}}>
+            {backBtn("w1")}
+            <div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:10}}>
+                <h2 style={{margin:0,fontSize:22,fontWeight:800,color:t.text}}>Votre activité</h2>
+                <span style={{fontSize:12,color:t.text3,fontWeight:500}}>2 / 2</span>
+              </div>
+              {stepBar(2)}
+            </div>
+            <div>
+              <label style={lbl}>Métier(s) <span style={{color:t.primary,fontWeight:900}}>*</span></label>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
+                {profList.map(p=>{
+                  const sel=profs.includes(String(p.id));
+                  return (
+                    <button key={p.id} onClick={()=>toggleP(p.id)}
+                      style={{padding:"12px 4px",borderRadius:12,cursor:"pointer",textAlign:"center",
+                        fontFamily:"inherit",border:`1.5px solid ${sel?p.color:t.border}`,
+                        background:sel?p.color+"18":t.bg2,transition:"all .15s"}}>
+                      <div style={{display:"flex",justifyContent:"center",marginBottom:5}}>
+                        <ProfIcon iconKey={p.icon} size={22} color={sel?p.color:t.text3}/>
+                      </div>
+                      <div style={{fontSize:9,fontWeight:700,color:sel?p.color:t.text3,lineHeight:1.3}}>
+                        {p.name}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <div>
+              <label style={lbl}>Ville <span style={{color:t.primary,fontWeight:900}}>*</span></label>
+              <select value={city} onChange={e=>setCity(e.target.value)}
+                style={{...inp,color:city?t.text:t.text3}}>
+                <option value="">Sélectionner votre ville...</option>
+                {cityList.map(c=><option key={c.id} value={c.name}>{c.name}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={lbl}>Niveau de prix</label>
+              <div style={{display:"flex",gap:8}}>
+                {[{id:0,label:"–",color:t.text3},...PRICE_LEVELS].map(pl=>(
+                  <button key={pl.id} onClick={()=>setPrice(pl.id)}
+                    style={{flex:1,padding:"10px 4px",borderRadius:10,cursor:"pointer",
+                      fontFamily:"inherit",fontWeight:700,fontSize:13,
+                      border:`1.5px solid ${price===pl.id?pl.color:t.border}`,
+                      background:price===pl.id?pl.color+"18":t.bg2,
+                      color:price===pl.id?pl.color:t.text3,transition:"all .15s"}}>
+                    {pl.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label style={lbl}>Bio <span style={{color:t.text3,fontWeight:400,
+                textTransform:"none",fontSize:11}}>(optionnel)</span></label>
+              <textarea value={bio} onChange={e=>setBio(e.target.value)} rows={3}
+                placeholder="Décrivez votre expérience, spécialités..."
+                style={{...inp,resize:"none"}}/>
+            </div>
+            {errBox}
+            <Btn t={t} size="lg" onClick={doRegisterWorker} style={{width:"100%"}} disabled={saving}>
+              {saving?"Création en cours...":"Créer mon compte →"}
+            </Btn>
+          </div>
+        )}
+
+        {/* ── CLIENT ────────────────────────────────────────────────── */}
+        {step==="client"&&(
+          <div style={{display:"flex",flexDirection:"column",gap:16}}>
+            {backBtn("choose")}
+            <div>
+              <h2 style={{margin:"0 0 4px",fontSize:22,fontWeight:800,color:t.text}}>Compte client</h2>
+              <p style={{margin:0,color:t.text3,fontSize:13}}>Trouvez des artisans vérifiés</p>
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:12}}>
+              <div>
+                <label style={lbl}>Prénom</label>
+                <input value={name} onChange={e=>setName(e.target.value)}
+                  placeholder="Votre prénom" style={inp}/>
+              </div>
+              <div>
+                <label style={lbl}>Email</label>
+                <input value={email} onChange={e=>setEmail(e.target.value)} type="email"
+                  placeholder="votre@email.com" style={inp}/>
+              </div>
+              <div>
+                <label style={lbl}>Mot de passe</label>
+                {pwdField("Minimum 6 caractères", doRegisterClient)}
+              </div>
+            </div>
+            {errBox}
+            <Btn t={t} size="lg" onClick={doRegisterClient} style={{width:"100%"}} disabled={saving}>
+              {saving?"Création en cours...":"Créer mon compte →"}
+            </Btn>
+          </div>
+        )}
+
+        {/* ── PENDING ───────────────────────────────────────────────── */}
+        {step==="pending"&&(
+          <div style={{textAlign:"center",padding:"8px 0 8px"}}>
+            <div style={{fontSize:52,marginBottom:14}}>⏳</div>
+            <h2 style={{margin:"0 0 10px",fontSize:20,fontWeight:800,color:t.text}}>Demande envoyée !</h2>
+            <p style={{color:t.text2,fontSize:14,lineHeight:1.7,margin:"0 0 24px"}}>
+              Votre profil est en cours de vérification.<br/>
+              Vous recevrez un <strong>email</strong> sous <strong style={{color:t.primary}}>24h</strong>.
+            </p>
+            <Btn t={t} style={{width:"100%"}} onClick={onClose}>Fermer</Btn>
+          </div>
+        )}
+
+      </div>
+    </Modal>
+  );
+}
+
 
 // ─── WORKER CARD ───────────────────────────────────────────────────────────────
 function WorkerCard({ worker, onClick, isFav, onToggleFav, t }) {
@@ -664,7 +1040,7 @@ function WorkerCard({ worker, onClick, isFav, onToggleFav, t }) {
             </div>
           </div>
           <div style={{flex:1,minWidth:0}}>
-            <div style={{fontWeight:600,fontSize:14,color:t.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{worker.name}</div>
+            <div style={{fontWeight:700,fontSize:15,color:t.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{worker.name}</div>
             <div style={{display:"flex",alignItems:"center",gap:4,color:t.text3,fontSize:12,marginTop:2}}>
               <Icon d={IC.mapPin} size={11} color={t.text3}/>{worker.city}
             </div>
@@ -678,12 +1054,22 @@ function WorkerCard({ worker, onClick, isFav, onToggleFav, t }) {
         )}
       </div>
       <div style={{padding:"10px 16px",borderTop:`1px solid ${t.border}`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-        <div style={{display:"flex",alignItems:"center",gap:5}}>
-          {rating
-            ?<><Stars rating={parseFloat(rating)} size={11} t={t}/>
-              <span style={{color:t.text2,fontSize:12,fontWeight:500}}>{rating}</span>
-              <span style={{color:t.text3,fontSize:11}}>({worker.reviews.length})</span></>
-            :<span style={{color:t.text3,fontSize:12}}>Aucun avis</span>}
+        <div style={{display:"flex",alignItems:"center",gap:8}}>
+          <div style={{display:"flex",alignItems:"center",gap:5}}>
+            {rating
+              ?<><Stars rating={parseFloat(rating)} size={11} t={t}/>
+                <span style={{color:t.text2,fontSize:12,fontWeight:500}}>{rating}</span>
+                <span style={{color:t.text3,fontSize:11}}>({worker.reviews.length})</span></>
+              :<span style={{color:t.text3,fontSize:12}}>Aucun avis</span>}
+          </div>
+          {worker.price_level>0&&PRICE_LEVELS.find(p=>p.id===worker.price_level)&&(
+            <span style={{
+              padding:"2px 7px",borderRadius:6,fontSize:11,fontWeight:800,
+              background:PRICE_LEVELS.find(p=>p.id===worker.price_level).color+"18",
+              color:PRICE_LEVELS.find(p=>p.id===worker.price_level).color,
+              border:`1px solid ${PRICE_LEVELS.find(p=>p.id===worker.price_level).color}40`
+            }}>{PRICE_LEVELS.find(p=>p.id===worker.price_level).label}</span>
+          )}
         </div>
         <button onClick={e=>{e.stopPropagation();onToggleFav&&onToggleFav();}}
           style={{display:"flex",alignItems:"center",justifyContent:"center",width:28,height:28,
@@ -814,17 +1200,8 @@ function WorkerSheet({ worker, onClose, onReview, currentUser, onNeedAuth, isFav
 
   return (
     <Sheet onClose={onClose} t={t}>
-      <div style={{padding:"12px 16px 0",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-        <div style={{width:32,height:4,borderRadius:2,background:t.border2,margin:"0 auto"}}/>
-        <button onClick={onToggleFav}
-          style={{position:"absolute",right:16,top:12,display:"flex",alignItems:"center",gap:6,
-            padding:"6px 10px",borderRadius:8,border:`1px solid ${isFav?t.danger+"40":t.border}`,
-            background:isFav?t.dangerLight:"transparent",cursor:"pointer",color:isFav?t.danger:t.text3,
-            fontSize:12,fontWeight:500,fontFamily:"inherit",transition:"all .15s"}}>
-          <Icon d={IC.heart} size={13} color={isFav?t.danger:t.text3}
-            style={{fill:isFav?t.danger:"none",stroke:isFav?t.danger:t.text3}}/>
-          {isFav?"Sauvegardé":"Sauvegarder"}
-        </button>
+      <div style={{padding:"12px 16px 0",display:"flex",justifyContent:"center",alignItems:"center"}}>
+        <div style={{width:32,height:4,borderRadius:2,background:t.border2}}/>
       </div>
       {/* Hero strip */}
       {worker.portfolio.length>0&&(
@@ -846,7 +1223,16 @@ function WorkerSheet({ worker, onClose, onReview, currentUser, onNeedAuth, isFav
             <h2 style={{margin:0,fontSize:21,fontWeight:900,color:t.text}}>{worker.name}</h2>
             <div style={{display:"flex",alignItems:"center",gap:4,color:t.text3,fontSize:13,marginTop:3}}><Icon d={IC.mapPin} size={12} color={t.text3}/>{worker.city}</div>
           </div>
-          <div style={{marginLeft:"auto",paddingBottom:4}}><AvailBadge available={worker.available} t={t}/></div>
+          <div style={{marginLeft:"auto",paddingBottom:4,display:"flex",alignItems:"center",gap:8}}>
+            <button onClick={onToggleFav}
+              style={{width:34,height:34,borderRadius:8,border:`1px solid ${isFav?t.danger+"40":t.border}`,
+                background:isFav?t.dangerLight:t.bg2,cursor:"pointer",display:"flex",
+                alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              <Icon d={IC.heart} size={15} color={isFav?t.danger:t.text3}
+                style={{fill:isFav?t.danger:"none",stroke:isFav?t.danger:t.text3}}/>
+            </button>
+            <AvailBadge available={worker.available} t={t}/>
+          </div>
         </div>
         <div style={{display:"flex",gap:6,flexWrap:"wrap",marginTop:12}}>
           {profs.map(p=>(
@@ -882,7 +1268,10 @@ function WorkerSheet({ worker, onClose, onReview, currentUser, onNeedAuth, isFav
         {tab==="profile"&&(
           <div style={{display:"flex",flexDirection:"column",gap:16}}>
             {worker.bio&&<div style={{background:t.bg2,borderRadius:12,padding:"14px 16px",border:`1px solid ${t.border}`}}>
-              <div style={{fontSize:11,fontWeight:700,color:t.text3,letterSpacing:"0.5px",marginBottom:6}}>À PROPOS</div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                <div style={{fontSize:11,fontWeight:700,color:t.text3,letterSpacing:"0.5px"}}>À PROPOS</div>
+                {worker.price_level>0&&(<span style={{fontSize:13,fontWeight:800,color:PRICE_LEVELS.find(p=>p.id===worker.price_level)?.color}}>{PRICE_LEVELS.find(p=>p.id===worker.price_level)?.label} {PRICE_LEVELS.find(p=>p.id===worker.price_level)?.desc}</span>)}
+              </div>
               <p style={{margin:0,color:t.text2,fontSize:14,lineHeight:1.7}}>{worker.bio}</p>
             </div>}
             {rating&&(
@@ -931,9 +1320,10 @@ function WorkerSheet({ worker, onClose, onReview, currentUser, onNeedAuth, isFav
                 <div key={r.id} style={{background:t.bg2,borderRadius:12,padding:"14px",border:`1px solid ${t.border}`}}>
                   <div style={{display:"flex",gap:10,marginBottom:10}}>
                     {/* Avatar with first letter */}
-                    <div style={{width:36,height:36,borderRadius:"50%",background:t.bg3,border:`1px solid ${t.border2}`,
-                      display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
-                      fontSize:14,fontWeight:600,color:t.text2}}>
+                    <div style={{width:36,height:36,borderRadius:"50%",flexShrink:0,
+                      background:`linear-gradient(135deg,${GRAD_A[((r.author||"?").charCodeAt(0))%GRAD_A.length]},${GRAD_B[((r.author||"?").charCodeAt(0))%GRAD_B.length]})`,
+                      display:"flex",alignItems:"center",justifyContent:"center",
+                      fontSize:14,fontWeight:700,color:"#fff"}}>
                       {(r.author||"?")[0].toUpperCase()}
                     </div>
                     <div style={{flex:1,minWidth:0}}>
@@ -985,7 +1375,7 @@ function WorkerSheet({ worker, onClose, onReview, currentUser, onNeedAuth, isFav
                 <div style={{borderRadius:10,border:`1px solid ${t.border}`,overflow:"hidden"}}>
                   {/* Preview of saved review */}
                   <div style={{padding:"14px 16px",background:t.bg2,borderBottom:`1px solid ${t.border}`}}>
-                    <div style={{fontSize:11,color:t.text3,marginBottom:8,fontWeight:500}}>VOTRE AVIS (SAUVEGARDÉ)</div>
+                    <div style={{fontSize:11,color:t.text3,marginBottom:8,fontWeight:500}}>VOTRE AVIS</div>
                     <div style={{display:"flex",gap:3,alignItems:"center",marginBottom:6}}>
                       {[1,2,3,4,5].map(s=><Icon key={s} d={IC.star} size={13}
                         color={s<=rf.rating?t.accent:t.border2}
@@ -1082,11 +1472,11 @@ function WorkerSheet({ worker, onClose, onReview, currentUser, onNeedAuth, isFav
                       ? <><Icon d={IC.loader} size={13} color={t.ctaText}/>Publication...</>
                       : currentUser
                         ? <><Icon d={IC.check} size={13} color={t.ctaText}/>Publier l'avis</>
-                        : <><Icon d={IC.phone} size={13} color={t.ctaText}/>Continuer pour publier</>}
+                        : <><Icon d={IC.user} size={13} color={t.ctaText}/>Se connecter pour publier</>}
                   </Btn>
                   {!currentUser&&rf.workType&&rf.comment.trim()&&(
                     <p style={{textAlign:"center",fontSize:11,color:t.text3,margin:"8px 0 0"}}>
-                      Votre avis sera sauvegardé — connexion rapide par SMS
+                      Votre avis sera publié après connexion à votre compte
                     </p>
                   )}
                 </>
@@ -1113,7 +1503,7 @@ function WorkerSheet({ worker, onClose, onReview, currentUser, onNeedAuth, isFav
 }
 
 // ─── HOME PAGE ────────────────────────────────────────────────────────────────
-function HomePage({ workers, onNavigate, setProfFilter, t, dark }) {
+function HomePage({ workers, banner, onNavigate, setProfFilter, t, dark, onShowAuth }) {
   const [hs,setHs]=useState(""), [hc,setHc]=useState("all");
   const top=[...workers].filter(w=>w.reviews.length>0).sort((a,b)=>(avg(b.reviews)||0)-(avg(a.reviews)||0)).slice(0,4);
 
@@ -1160,6 +1550,13 @@ function HomePage({ workers, onNavigate, setProfFilter, t, dark }) {
 
       <div style={{maxWidth:1200,margin:"0 auto",padding:"40px 24px 60px"}}>
         {/* Categories */}
+        {/* Banner — managed from admin panel */}
+        {banner?.url && (
+          <div style={{margin:"0 0 32px",borderRadius:16,overflow:"hidden",border:`1px solid ${t.border}`,cursor:banner.link?"pointer":"default",flexShrink:0}}
+            onClick={()=>banner.link&&window.open(banner.link,"_blank")}>
+            <img src={banner.url} alt="Bannière" style={{width:"100%",display:"block",maxHeight:200,objectFit:"cover"}}/>
+          </div>
+        )}
         <SectionTitle t={t} sub="Choisissez un métier pour voir les artisans disponibles" action={<Btn t={t} variant="outline" size="sm" onClick={()=>onNavigate("search",{})}>Voir tout</Btn>}>Nos métiers</SectionTitle>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(96px,1fr))",gap:10,marginBottom:48}}>
           {PROFESSIONS.map(p=>{
@@ -1219,7 +1616,7 @@ function HomePage({ workers, onNavigate, setProfFilter, t, dark }) {
           ))}
         </div>
       </div>
-      <Footer t={t}/>
+      <Footer t={t} dark={dark}/>
     </div>
   );
 }
@@ -1364,13 +1761,56 @@ function NotFoundPage({ onGoHome, t }) {
   );
 }
 
+// ─── DELETE ACCOUNT MODAL ──────────────────────────────────────────────────────
+function DeleteAccountModal({ worker, t, onClose }) {
+  const [txt,setTxt]=useState("");
+  const [deleting,setDeleting]=useState(false);
+  return (
+    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",zIndex:300,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+      <div style={{background:t.card,borderRadius:20,padding:28,maxWidth:400,width:"100%",border:`1px solid ${t.border}`}}>
+        <div style={{fontSize:44,textAlign:"center",marginBottom:12}}>⚠️</div>
+        <h3 style={{textAlign:"center",margin:"0 0 8px",color:t.text,fontSize:18,fontWeight:800}}>Supprimer mon compte</h3>
+        <p style={{color:t.text2,fontSize:13,textAlign:"center",lineHeight:1.7,margin:"0 0 8px"}}>
+          Cette action est <strong style={{color:t.danger}}>irréversible</strong>. Toutes vos données seront supprimées définitivement :
+        </p>
+        <ul style={{color:t.text3,fontSize:12,margin:"0 0 20px 16px",lineHeight:2}}>
+          <li>Votre profil et informations personnelles</li>
+          <li>Vos photos de portfolio</li>
+          <li>Vos avis reçus</li>
+        </ul>
+        <div style={{background:t.dangerLight,border:`1px solid ${t.danger}30`,borderRadius:10,padding:"12px 14px",marginBottom:20}}>
+          <p style={{color:t.danger,fontSize:12,margin:"0 0 8px",fontWeight:600}}>Tapez <strong>SUPPRIMER</strong> pour confirmer :</p>
+          <input value={txt} onChange={e=>setTxt(e.target.value)} placeholder="SUPPRIMER"
+            style={{width:"100%",boxSizing:"border-box",background:t.bg,border:`1.5px solid ${txt==="SUPPRIMER"?t.danger:t.border}`,borderRadius:8,padding:"10px 12px",color:t.text,fontSize:14,fontFamily:"inherit",outline:"none"}}/>
+        </div>
+        <div style={{display:"flex",gap:10}}>
+          <button onClick={onClose} style={{flex:1,padding:"11px",borderRadius:10,border:`1px solid ${t.border}`,background:t.bg2,color:t.text,fontWeight:600,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>Annuler</button>
+          <button disabled={txt!=="SUPPRIMER"||deleting} onClick={async()=>{
+            setDeleting(true);
+            try {
+              await supabase.from("portfolio_photos").delete().eq("worker_id",worker.id);
+              await supabase.from("worker_professions").delete().eq("worker_id",worker.id);
+              await supabase.from("reviews").delete().eq("worker_id",worker.id);
+              await supabase.from("workers").delete().eq("id",worker.id);
+              await supabase.auth.signOut();
+              window.location.reload();
+            } catch(e){ alert("Erreur: "+e.message); setDeleting(false); }
+          }} style={{flex:1,padding:"11px",borderRadius:10,border:"none",background:txt==="SUPPRIMER"&&!deleting?t.danger:"#ccc",color:"white",fontWeight:700,fontSize:13,cursor:txt==="SUPPRIMER"&&!deleting?"pointer":"not-allowed",fontFamily:"inherit"}}>
+            {deleting?"Suppression...":"Supprimer définitivement"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 // ─── FOOTER ────────────────────────────────────────────────────────────────────
-function Footer({ t }) {
+function Footer({ t, dark=false }) {
   return (
     <footer style={{background:t.card,borderTop:`1px solid ${t.border}`,padding:"32px 24px",marginTop:"auto"}}>
       <div style={{maxWidth:1200,margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center",gap:16,textAlign:"center"}}>
-        <div style={{fontWeight:800,fontSize:18,color:t.text}}>AloAji</div>
+        <AloAjiLogo height={24} dark={dark}/>
         <p style={{color:t.text3,fontSize:13,margin:0,maxWidth:400,lineHeight:1.6}}>
           La plateforme des artisans vérifiés au Maroc.
         </p>
@@ -1381,8 +1821,8 @@ function Footer({ t }) {
           <a href="/terms.html" target="_blank" style={{color:t.text3,fontSize:12,textDecoration:"none",borderBottom:`1px solid ${t.border}`}}>
             Conditions d'utilisation
           </a>
-          <a href="mailto:hello@digcy.com" style={{color:t.text3,fontSize:12,textDecoration:"none",borderBottom:`1px solid ${t.border}`}}>
-            hello@digcy.com
+          <a href="mailto:contact@aloaji.ma" style={{color:t.text3,fontSize:12,textDecoration:"none",borderBottom:`1px solid ${t.border}`}}>
+            contact@aloaji.ma
           </a>
         </div>
         <div style={{color:t.text3,fontSize:11}}>© {new Date().getFullYear()} Digcy SARL AU — Tous droits réservés</div>
@@ -1398,12 +1838,15 @@ function SearchPage({ workers, onSelect, initSearch, initCity, profFilter, setPr
   const [avail,setAvail]=useState(false);
   const [view,setView]=useState("list");
 
+  const [priceFilter,setPriceFilter]=useState(0); // 0=all
   const filtered=workers.filter(w=>{
-    const ms=w.name.toLowerCase().includes(search.toLowerCase())||PROFESSIONS.filter(p=>w.professions.includes(p.id)).some(p=>p.name.toLowerCase().includes(search.toLowerCase()));
+    const ms=!search||w.name.toLowerCase().includes(search.toLowerCase())||(w.professionData&&w.professionData.some(p=>p&&p.name&&p.name.toLowerCase().includes(search.toLowerCase())))||PROFESSIONS.filter(p=>w.professions.some(pid=>String(pid)===String(p.id))).some(p=>p.name.toLowerCase().includes(search.toLowerCase()));
+    const pp=priceFilter===0||(w.price_level||0)===priceFilter;
     const mc=city==="all"||w.city===city;
-    const mp=profFilter==="all"||w.professions.includes(parseInt(profFilter));
+    const profObj=PROFESSIONS.find(p=>String(p.id)===String(profFilter));
+    const mp=profFilter==="all"||!profObj||(w.professionData&&w.professionData.some(pd=>pd&&pd.name===profObj.name))||(w.professions&&w.professions.some(pid=>String(pid)===String(profFilter)));
     const ma=!avail||w.available;
-    return ms&&mc&&mp&&ma;
+    return ms&&mc&&mp&&ma&&pp;
   });
 
   return (
@@ -1435,13 +1878,20 @@ function SearchPage({ workers, onSelect, initSearch, initCity, profFilter, setPr
               ))}
             </div>
           </div>
-          {/* Row 2: availability + profession chips */}
+          {/* Row 2: price filter */}
+          <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:2}}>
+            <button onClick={()=>setPriceFilter(0)} style={{padding:"5px 10px",borderRadius:6,border:`1px solid ${priceFilter===0?t.primary:t.border}`,background:priceFilter===0?t.primary+"18":"transparent",color:priceFilter===0?t.primary:t.text3,fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"inherit",flexShrink:0,whiteSpace:"nowrap"}}>Tous prix</button>
+            {PRICE_LEVELS.map(pl=>(
+              <button key={pl.id} onClick={()=>setPriceFilter(pl.id)} style={{padding:"5px 10px",borderRadius:6,border:`1px solid ${priceFilter===pl.id?pl.color:t.border}`,background:priceFilter===pl.id?pl.color+"18":"transparent",color:priceFilter===pl.id?pl.color:t.text3,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",flexShrink:0,whiteSpace:"nowrap"}}>{pl.label} {pl.desc}</button>
+            ))}
+          </div>
+          {/* Row 3: availability + profession chips */}
           <div style={{display:"flex",gap:6,alignItems:"center",overflowX:"auto",paddingBottom:2}}>
             <button onClick={()=>setAvail(v=>!v)}
               style={{display:"inline-flex",alignItems:"center",gap:5,padding:"5px 10px",
                 borderRadius:6,border:`1px solid ${avail?t.success+"60":t.border}`,
                 background:avail?t.successLight:"transparent",
-                color:avail?t.success:t.text3,fontSize:12,fontWeight:500,cursor:"pointer",
+                color:avail?t.success:t.text3,fontSize:13,fontWeight:500,cursor:"pointer",
                 flexShrink:0,fontFamily:"inherit"}}>
               <span style={{width:6,height:6,borderRadius:"50%",background:avail?t.success:t.border2}}/>
               Disponible
@@ -1487,10 +1937,15 @@ function SearchPage({ workers, onSelect, initSearch, initCity, profFilter, setPr
   );
 }
 
+
+// ─── DELETE ACCOUNT MODAL ──────────────────────────────────────────────────────
+
 // ─── WORKER DASHBOARD ─────────────────────────────────────────────────────────
 function WorkerDash({ worker, onToggle, onRefresh, t }) {
   const [imgTab,setImgTab]=useState("portfolio");
   const [uploading,setUploading]=useState(false);
+  const [showDeleteModal,setShowDeleteModal]=useState(false);
+  const [deleteConfirmText,setDeleteConfirmText]=useState("");
   const [caption,setCaption]=useState("");
   const [showCaption,setShowCaption]=useState(false);
   const [pendingFile,setPendingFile]=useState(null);
@@ -1728,30 +2183,25 @@ function WorkerDash({ worker, onToggle, onRefresh, t }) {
             )}
           </div>
         </Card>
-        {/* Legal + Delete account */}
-        <div style={{marginBottom:20,padding:"0 4px"}}>
-          <div style={{display:"flex",gap:16,marginBottom:12,flexWrap:"wrap"}}>
-            <a href="/privacy" target="_blank" style={{color:t.text3,fontSize:12,textDecoration:"none",borderBottom:`1px solid ${t.border}`}}>Politique de confidentialité</a>
-            <a href="/terms" target="_blank" style={{color:t.text3,fontSize:12,textDecoration:"none",borderBottom:`1px solid ${t.border}`}}>Conditions d'utilisation</a>
+        {/* Price Level */}
+        <Card t={t} hover={false} style={{padding:"20px",marginBottom:20}}>
+          <div style={{fontWeight:700,fontSize:15,color:t.text,marginBottom:14}}>Mon niveau de prix</div>
+          <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+            {[{id:0,label:"Non défini",color:t.text3,desc:""},...PRICE_LEVELS].map(pl=>(
+              <button key={pl.id} onClick={async()=>{
+                await supabase.from("workers").update({price_level:pl.id||null}).eq("id",worker.id);
+                if(onRefresh) await onRefresh();
+              }} style={{padding:"8px 16px",borderRadius:10,
+                border:`1.5px solid ${(worker.price_level||0)===pl.id?pl.color||t.border2:t.border}`,
+                background:(worker.price_level||0)===pl.id?`${pl.color||t.primary}18`:t.bg2,
+                color:(worker.price_level||0)===pl.id?pl.color||t.primary:t.text3,
+                fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>
+                {pl.label}{pl.desc?" — "+pl.desc:""}
+              </button>
+            ))}
           </div>
-          <button onClick={async()=>{
-            if(!window.confirm("Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.")) return;
-            if(!window.confirm("Dernière confirmation : toutes vos données seront supprimées définitivement.")) return;
-            try {
-              await supabase.from("portfolio_photos").delete().eq("worker_id", worker.id);
-              await supabase.from("worker_professions").delete().eq("worker_id", worker.id);
-              await supabase.from("reviews").delete().eq("worker_id", worker.id);
-              await supabase.from("workers").delete().eq("id", worker.id);
-              await supabase.auth.signOut();
-              window.location.reload();
-            } catch(e){ alert("Erreur: "+e.message); }
-          }}
-            style={{display:"flex",alignItems:"center",gap:6,padding:"8px 14px",borderRadius:8,
-              border:`1px solid ${t.danger}40`,background:"transparent",cursor:"pointer",
-              color:t.danger,fontSize:12,fontFamily:"inherit"}}>
-            <Icon d={IC.x} size={13} color={t.danger}/>Supprimer mon compte
-          </button>
-        </div>
+          <p style={{color:t.text3,fontSize:11,margin:"10px 0 0"}}>Visible sur votre fiche et dans les filtres de recherche.</p>
+        </Card>
 
         {/* Reviews */}
         <Card t={t} hover={false} style={{padding:"20px"}}>
@@ -1770,6 +2220,33 @@ function WorkerDash({ worker, onToggle, onRefresh, t }) {
             );})}
           </div>}
         </Card>
+
+        {/* Legal + Delete — below reviews per Apple guidelines */}
+        <div style={{marginTop:24,padding:"0 4px"}}>
+          <div style={{display:"flex",gap:20,marginBottom:14,flexWrap:"wrap"}}>
+            <a href="/privacy.html" target="_blank" style={{color:t.text3,fontSize:12,textDecoration:"none",borderBottom:`1px solid ${t.border}`}}>Politique de confidentialité</a>
+            <a href="/terms.html" target="_blank" style={{color:t.text3,fontSize:12,textDecoration:"none",borderBottom:`1px solid ${t.border}`}}>Conditions d'utilisation</a>
+          </div>
+          <button onClick={()=>setShowDeleteModal(true)}
+            style={{display:"flex",alignItems:"center",gap:6,padding:"9px 16px",borderRadius:8,
+              border:`1px solid ${t.danger}40`,background:t.dangerLight,cursor:"pointer",
+              color:t.danger,fontSize:13,fontWeight:600,fontFamily:"inherit"}}>
+            <Icon d={IC.x} size={14} color={t.danger}/>Supprimer mon compte
+          </button>
+        </div>
+
+        {showDeleteModal&&<DeleteAccountModal worker={worker} t={t}
+          onClose={()=>setShowDeleteModal(false)}
+          onConfirm={async()=>{
+            try {
+              await supabase.from("portfolio_photos").delete().eq("worker_id", worker.id);
+              await supabase.from("worker_professions").delete().eq("worker_id", worker.id);
+              await supabase.from("reviews").delete().eq("worker_id", worker.id);
+              await supabase.from("workers").delete().eq("id", worker.id);
+              await supabase.auth.signOut();
+              window.location.reload();
+            } catch(e){ alert("Erreur: "+e.message); setShowDeleteModal(false); }
+          }}/>}
       </div>
     </div>
   );
@@ -1788,14 +2265,14 @@ function ConsumerDash({ currentUser, workers, favorites, onToggleFav, onViewWork
         <div style={{maxWidth:700, margin:"0 auto"}}>
           <div style={{fontSize:11, fontWeight:700, color:t.text3, letterSpacing:"0.6px", marginBottom:14}}>MON ESPACE</div>
           <div style={{display:"flex", gap:14, alignItems:"center"}}>
-            <div style={{width:56, height:56, borderRadius:"50%", background:t.cta, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, fontWeight:900, color:"#fff", flexShrink:0}}>
+            <div style={{width:56, height:56, borderRadius:"50%", background:`linear-gradient(135deg,${GRAD_A[0]},${GRAD_B[0]})`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, fontWeight:900, color:"#fff", flexShrink:0}}>
               {currentUser.name ? currentUser.name.trim().split(" ").slice(0,2).map(n=>n[0]||"").join("").toUpperCase() : <Icon d={IC.user} size={14} color={t.text3}/>}
             </div>
             <div>
               <h2 style={{margin:0, fontSize:20, fontWeight:900, color:t.text}}>{currentUser.name||"Mon compte"}</h2>
-              <div style={{color:t.text2, fontSize:13, marginTop:2}}><Icon d={IC.phone} size={11} color={t.text3}/>{currentUser.phone ? "0"+currentUser.phone : ""}</div>
+              <div style={{color:t.text3, fontSize:13, marginTop:2}}>{currentUser.email||""}</div>
               <div style={{display:"inline-flex", alignItems:"center", gap:5, marginTop:6, padding:"3px 10px", borderRadius:20, background:`${t.primary}18`, border:`1px solid ${t.primary}30`}}>
-                <span style={{fontSize:10, fontWeight:700, color:t.primary}}>CONSOMMATEUR</span>
+                <span style={{fontSize:10, fontWeight:700, color:t.primary}}>✨ Membre AloAji</span>
               </div>
             </div>
           </div>
@@ -1843,7 +2320,7 @@ function ConsumerDash({ currentUser, workers, favorites, onToggleFav, onViewWork
                   <div style={{position:"relative"}}>
                     {w.avatar_url
                       ? <img src={w.avatar_url} alt="" style={{width:46, height:46, borderRadius:"50%", objectFit:"cover"}}/>
-                      : <div style={{width:46, height:46, borderRadius:"50%", background:`linear-gradient(135deg,${["#6366F1","#EC4899","#F59E0B","#10B981","#3B82F6","#8B5CF6"][w.gi%6]},${["#8B5CF6","#F43F5E","#EF4444","#06B6D4","#6366F1","#EC4899"][w.gi%6]})`, display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, color:"#fff", fontSize:15}}>{w.initials}</div>
+                      : <div style={{width:46, height:46, borderRadius:"50%", background:`linear-gradient(135deg,${GRAD_A[(w.gi||0)%GRAD_A.length]},${GRAD_B[(w.gi||0)%GRAD_B.length]})`, display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, color:"#fff", fontSize:15}}>{w.initials}</div>
                     }
                     <div style={{position:"absolute", bottom:-2, right:-2, width:14, height:14, borderRadius:"50%", background:w.available?"#10B981":"#9CA3AF", border:`2px solid ${t.card}`}}/>
                   </div>
@@ -1864,7 +2341,6 @@ function ConsumerDash({ currentUser, workers, favorites, onToggleFav, onViewWork
                         borderRadius:6,border:`1px solid ${t.danger+"40"}`,background:t.dangerLight,cursor:"pointer"}}>
                       <Icon d={IC.heart} size={13} color={t.danger} style={{fill:t.danger,stroke:t.danger}}/>
                     </button>
-                    <Icon d={IC.chevronRight} size={14} color={t.text3}/>
                   </div>
                 </div>
               ))}
@@ -1927,11 +2403,7 @@ function NavBar({ page, setPage, dark, setDark, currentUser, onShowAuth, onLogou
           <button onClick={()=>setPage("home")}
             style={{display:"flex",alignItems:"center",gap:8,background:"none",
               border:"none",cursor:"pointer",padding:"0 8px 0 0",flexShrink:0}}>
-            <div style={{width:28,height:28,borderRadius:7,background:t.bg3,border:`1px solid ${t.border2}`,
-              display:"flex",alignItems:"center",justifyContent:"center"}}>
-              <Icon d={IC.wrench} size={14} color={t.text2}/>
-            </div>
-            <span style={{fontWeight:600,fontSize:16,color:t.text,letterSpacing:"-0.3px"}}>AloAji</span>
+            <AloAjiLogo height={22} dark={dark}/>
           </button>
 
           {/* Desktop nav links */}
@@ -1976,9 +2448,9 @@ function NavBar({ page, setPage, dark, setDark, currentUser, onShowAuth, onLogou
               </div>
             ):(
               <div style={{display:"flex",gap:6}}>
-                <Btn t={t} variant="ghost" size="sm" onClick={()=>onShowAuth("login")}>Connexion</Btn>
+                <Btn t={t} variant="ghost" size="sm" onClick={()=>onShowAuth("login")} style={{fontSize:14,padding:"7px 14px"}}>Connexion</Btn>
                 <span className="aloaji-desktop-only">
-                  <Btn t={t} variant="outline" size="sm" onClick={()=>onShowAuth("register")}>S'inscrire</Btn>
+                  <Btn t={t} variant="outline" size="sm" onClick={()=>onShowAuth("register")} style={{fontSize:14,padding:"7px 14px"}}>S'inscrire</Btn>
                 </span>
               </div>
             )}
@@ -1997,22 +2469,23 @@ function NavBar({ page, setPage, dark, setDark, currentUser, onShowAuth, onLogou
           return (
             <button key={n.id}
               onClick={()=>{if(isProfile&&!currentUser){onShowAuth("login");return;}setPage(n.id);}}
-              style={{flex:1,padding:"10px 0 12px",border:"none",background:"none",cursor:"pointer",
-                display:"flex",flexDirection:"column",alignItems:"center",gap:4,fontFamily:"inherit"}}>
+              style={{flex:1,padding:"12px 0 14px",border:"none",background:"none",cursor:"pointer",
+                display:"flex",flexDirection:"column",alignItems:"center",gap:5,fontFamily:"inherit"}}>
               {isProfile&&currentUser?.avatarUrl ? (
                 <img src={currentUser.avatarUrl} alt=""
                   style={{width:22,height:22,borderRadius:"50%",objectFit:"cover",
                     outline:isActive?`2px solid ${t.text}`:"2px solid transparent",outlineOffset:1}}/>
               ) : isProfile&&currentUser&&initials ? (
-                <div style={{width:22,height:22,borderRadius:"50%",background:t.bg3,
-                  border:`1px solid ${isActive?t.text:t.border}`,display:"flex",
-                  alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:600,color:t.text2}}>
+                <div style={{width:22,height:22,borderRadius:"50%",
+                  background:`linear-gradient(135deg,${GRAD_A[0]},${GRAD_B[0]})`,
+                  display:"flex",alignItems:"center",justifyContent:"center",
+                  fontSize:8,fontWeight:700,color:"#fff"}}>
                   {initials}
                 </div>
               ) : (
-                <Icon d={n.ic} size={19} color={isActive?t.text:t.text3}/>
+                <Icon d={n.ic} size={22} color={isActive?t.text:t.text3}/>
               )}
-              <span style={{fontSize:9,fontWeight:500,color:isActive?t.text:t.text3,letterSpacing:"0.1px"}}>{n.l}</span>
+              <span style={{fontSize:11,fontWeight:500,color:isActive?t.text:t.text3,letterSpacing:"0.1px"}}>{n.l}</span>
             </button>
           );
         })}
@@ -2023,10 +2496,11 @@ function NavBar({ page, setPage, dark, setDark, currentUser, onShowAuth, onLogou
 
 // ─── ROOT ──────────────────────────────────────────────────────────────────────
 export default function App() {
-  const [dark,setDark]=useState(true);
+  const [dark,setDark]=useState(false);
   const t=dark?DARK:LIGHT;
   const [page,setPage]=useState("home");
   const [workers,setWorkers]=useState([]);
+  const [banner,setBanner]=useState(null);
   const [professions,setProfessions]=useState(PROFESSIONS); // fallback to static
   const [cities,setCities]=useState(CITIES);               // fallback to static
   const [loading,setLoading]=useState(true);
@@ -2045,6 +2519,7 @@ export default function App() {
   };
   const [showAuth,setShowAuth]=useState(false);
   const [authMode,setAuthMode]=useState("login");
+  const [showResetPwd,setShowResetPwd]=useState(false);
   const [profFilter,setProfFilter]=useState("all");
   const [heroSearch,setHeroSearch]=useState("");
   const [heroCity,setHeroCity]=useState("all");
@@ -2062,7 +2537,16 @@ export default function App() {
   // ── Load data from Supabase on startup ──────────────────────────────────────
   useEffect(()=>{
     loadData();
+    // Listen for Supabase auth events — catches password recovery redirect
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if(event === "PASSWORD_RECOVERY"){
+        setShowResetPwd(true);
+        // Clean the URL hash so it doesn't re-trigger on refresh
+        window.history.replaceState(null,"",window.location.pathname);
+      }
+    });
     checkSession();
+    return () => subscription.unsubscribe();
   },[]);
 
   const loadData = async () => {
@@ -2090,6 +2574,7 @@ export default function App() {
         city: w.city?.name || "",
         professions: (w.worker_professions||[]).map(wp=>wp.profession?.id).filter(Boolean),
         professionData: (w.worker_professions||[]).map(wp=>wp.profession).filter(Boolean),
+        price_level: w.price_level||0,
         reviews: (w.reviews||[]).map(r=>({...r,author:r.author_name,workType:r.work_type,date:r.created_at?.split("T")[0]})),
         portfolio: (w.portfolio_photos||[]).map((p,j)=>({...p,gi:j%6})),
         initials: w.name.trim().split(" ").slice(0,2).map(n=>n[0]||"").join("").toUpperCase(),
@@ -2097,6 +2582,10 @@ export default function App() {
       }));
 
       setWorkers(shaped);
+
+      // Load banner
+      const { data: bannerData } = await supabase.from("banner").select("*").eq("active", true).maybeSingle();
+      setBanner(bannerData || null);
 
       // Load cities & professions for filters/forms
       const { data: dbCities } = await supabase.from("cities").select("*").order("name");
@@ -2120,122 +2609,70 @@ export default function App() {
   // ── Check if user is already logged in ──────────────────────────────────────
   const checkSession = async () => {
     const { data:{ session } } = await supabase.auth.getSession();
-    if(!session) {
-      // Restore consumer session from localStorage (consumers have no Supabase auth session)
-      try {
-        const saved = localStorage.getItem("aloaji_consumer");
-        if(saved) {
-          const consumer = JSON.parse(saved);
-          setCurrentUser({ name:consumer.name, phone:consumer.phone, role:"consumer", status:"active" });
-        }
-      } catch(e) { /* ignore */ }
+    if(!session) return;
+
+    const userEmail = session.user.email || "";
+
+    // 1. Check workers table first
+    const { data:worker } = await supabase
+      .from("workers")
+      .select(`*, city:cities(name), worker_professions(profession:professions(*)), reviews(*), portfolio_photos(*)`)
+      .eq("email", userEmail.toLowerCase())
+      .maybeSingle();
+
+    if(worker){
+      if(worker.status==="approved"){
+        const shaped = {
+          ...worker,
+          city: worker.city?.name||"",
+          professions:(worker.worker_professions||[]).map(wp=>wp.profession?.id).filter(Boolean),
+          professionData:(worker.worker_professions||[]).map(wp=>wp.profession).filter(Boolean),
+          reviews:(worker.reviews||[]).map(r=>({...r,author:r.author_name,workType:r.work_type,date:r.created_at?.split("T")[0]})),
+          portfolio:(worker.portfolio_photos||[]).map((p,j)=>({...p,gi:j%6})),
+          initials:worker.name.trim().split(" ").slice(0,2).map(n=>n[0]||"").join("").toUpperCase(),
+          gi:0,
+        };
+        setCurrentUser({ id:worker.id, name:worker.name, email:userEmail, role:"worker", status:"approved", avatarUrl:worker.avatar_url||null });
+        setWorkerProfile(shaped);
+      } else if(worker.status==="pending"){
+        setCurrentUser({ id:worker.id, name:worker.name, email:userEmail, role:"pending", status:"pending" });
+      }
       return;
     }
-    // Get phone from session
-    const rawPhone = session.user.phone || "";
-    // +212612345678 → 0612345678
-    const digits0 = rawPhone.startsWith("+212") ? "0"+rawPhone.slice(4) : rawPhone;
-    const digits  = rawPhone.startsWith("+212") ? rawPhone.slice(4) : rawPhone;
-    // Look up worker by phone
-    const phoneVariants = [digits0, digits, rawPhone];
-    let worker = null;
-    for(const ph of phoneVariants){
-      const { data, error:pErr } = await supabase
-        .from("workers")
-        .select(`*, city:cities(name), worker_professions(profession:professions(*)), reviews(*), portfolio_photos(*)`)
-        .eq("phone", ph)
-        .maybeSingle();
-      if(data && !pErr){ worker = data; break; }
-    }
-    if(worker && worker.status==="approved"){
-      const shaped = {
-        ...worker,
-        city: worker.city?.name||"",
-        professions:(worker.worker_professions||[]).map(wp=>wp.profession?.id).filter(Boolean),
-        professionData:(worker.worker_professions||[]).map(wp=>wp.profession).filter(Boolean),
-        reviews:(worker.reviews||[]).map(r=>({...r,author:r.author_name,workType:r.work_type,date:r.created_at?.split("T")[0]})),
-        portfolio:(worker.portfolio_photos||[]).map((p,j)=>({...p,gi:j%6})),
-        initials:worker.name.trim().split(" ").slice(0,2).map(n=>n[0]||"").join("").toUpperCase(),
-        gi:0,
-      };
-      setCurrentUser({ id:worker.id, name:worker.name, phone:digits0, role:"worker", status:"approved", avatarUrl:worker.avatar_url||null });
-      setWorkerProfile(shaped);
-    } else if(worker && worker.status==="pending"){
-      setCurrentUser({ id:worker.id, name:worker.name, phone:digits0, role:"pending", status:"pending" });
-    } else if(worker && worker.status==="rejected"){
-      // Rejected worker - don't restore session
-    } else if(!worker){
-      // Authenticated phone but not a worker — could be a consumer who verified OTP
-      // Restore name from localStorage if available
-      try {
-        const saved = localStorage.getItem("aloaji_consumer");
-        if(saved) {
-          const consumer = JSON.parse(saved);
-          setCurrentUser({ name:consumer.name, phone:digits0, role:"consumer", status:"active" });
-        }
-      } catch(e) { /* ignore */ }
-    }
+
+    // 2. Check user_profiles (consumers)
+    const { data:profile } = await supabase
+      .from("user_profiles")
+      .select("name, email")
+      .eq("email", userEmail.toLowerCase())
+      .maybeSingle();
+
+    const displayName = profile?.name || session.user.user_metadata?.name || userEmail.split("@")[0];
+    setCurrentUser({ name:displayName, email:userEmail, role:"consumer", status:"active" });
   };
 
   const loadWorkerProfile = async (workerId) => {
     const { data } = await supabase
       .from("workers")
       .select(`*, city:cities(name), worker_professions(profession:professions(*)), reviews(*), portfolio_photos(*)`)
-      .eq("id", workerId)
-      .single();
-    if(data) setWorkerProfile({
-      ...data,
-      city: data.city?.name||"",
-      professions:(data.worker_professions||[]).map(wp=>wp.profession?.id).filter(Boolean),
-      professionData:(data.worker_professions||[]).map(wp=>wp.profession).filter(Boolean),
-      reviews:(data.reviews||[]).map(r=>({...r,author:r.author_name,workType:r.work_type,date:r.created_at?.split("T")[0]})),
-      portfolio:(data.portfolio_photos||[]).map((p,j)=>({...p,gi:j%6})),
-      initials:data.name.trim().split(" ").slice(0,2).map(n=>n[0]||"").join("").toUpperCase(),
-      gi:0,
-    });
-  };
-
-  // ── Post a review ────────────────────────────────────────────────────────────
-  const onReview = async (wid, review) => {
-    if(!currentUser) return;
-    try {
-      await supabase.from("reviews").insert({
-        worker_id:   wid,
-        consumer_id: currentUser.role==="consumer" ? currentUser.id : null,
-        author_name: currentUser.name,
-        rating:      review.rating,
-        comment:     review.comment,
-        work_type:   review.workType,
-      });
-      await loadData(); // refresh workers list
-    } catch(err) {
-      console.error("Review failed:", err.message);
-      // Optimistic fallback
-      setWorkers(ws=>ws.map(w=>w.id===wid?{...w,reviews:[...w.reviews,{id:Date.now(),...review,author:currentUser.name,date:new Date().toISOString().split("T")[0]}]}:w));
+      .eq("id", workerId).maybeSingle();
+    if(data){
+      const shaped = {
+        ...data,
+        city: data.city?.name||"",
+        professions:(data.worker_professions||[]).map(wp=>wp.profession?.id).filter(Boolean),
+        professionData:(data.worker_professions||[]).map(wp=>wp.profession).filter(Boolean),
+        reviews:(data.reviews||[]).map(r=>({...r,author:r.author_name,workType:r.work_type,date:r.created_at?.split("T")[0]})),
+        portfolio:(data.portfolio_photos||[]).map((p,j)=>({...p,gi:j%6})),
+        initials:data.name.trim().split(" ").slice(0,2).map(n=>n[0]||"").join("").toUpperCase(),
+        gi:0,
+      };
+      setWorkerProfile(shaped);
     }
   };
 
-  // ── Toggle availability (workers only) ──────────────────────────────────────
-  const onToggle = async () => {
-    if(!workerProfile) return;
-    const newVal = !workerProfile.available;
-    setWorkerProfile(p=>({...p,available:newVal}));
-    await supabase.from("workers").update({available:newVal}).eq("id",workerProfile.id);
-  };
+  const [pendingReview,setPendingReview]=useState(null);
 
-  const freshSelected = selectedWorker ? workers.find(w=>w.id===selectedWorker.id)||selectedWorker : null;
-
-  // ── Pending review — saved when user clicks "login to comment" ───────────────
-  const [pendingReview, setPendingReview] = useState(null); // {workerId, review}
-  const [reviewJustDone, setReviewJustDone] = useState(false); // show success in sheet after auto-submit
-
-  const handleNavigate = (dest,params={}) => {
-    if(dest==="search"){setHeroSearch(params.search||"");setHeroCity(params.city||"all");setPage("search");}
-    else if(dest==="worker"&&params.worker) openWorkerProfile(params.worker);
-    else setPage(dest);
-  };
-
-  const handleShowAuth = (mode) => { setAuthMode(mode); setShowAuth(true); };
   const handleAuth = async (user) => {
     setCurrentUser(user);
     setShowAuth(false);
@@ -2246,196 +2683,194 @@ export default function App() {
     } else if(user.role==="pending"){
       setPage("home");
     }
-    // If there was a pending review waiting for auth, submit it now
-    if(pendingReview && (user.role==="consumer" || user.role==="worker")){
+    if(pendingReview && (user.role==="consumer"||user.role==="worker")){
       const { workerId, review } = pendingReview;
       setPendingReview(null);
       try {
         await supabase.from("reviews").insert({
-          worker_id:   workerId,
-          consumer_id: user.role==="consumer" ? user.id : null,
+          worker_id: workerId,
           author_name: user.name,
-          rating:      review.rating,
-          comment:     review.comment,
-          work_type:   review.workType,
+          rating: review.rating,
+          comment: review.comment,
+          work_type: review.workType,
         });
         await loadData();
-        // Re-open the worker sheet so user sees their review published
-        const worker = workers.find(w=>w.id===workerId);
-        if(worker) {
-          setReviewJustDone(true);
-          setTimeout(()=>{ openWorkerProfile(worker); }, 400);
-        }
-      } catch(err) {
-        console.error("Pending review failed:", err.message);
-      }
+      } catch(e){ console.error("Review post-auth failed:", e); }
     }
   };
+
+  const handleShowAuth = (mode="login") => {
+    setAuthMode(mode);
+    setShowAuth(true);
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    localStorage.removeItem("aloaji_consumer");
     setCurrentUser(null);
     setWorkerProfile(null);
     setPage("home");
   };
 
+  const handleNavigate = (target, params={}) => {
+    if(target==="search"){
+      if(params.search!==undefined) setHeroSearch(params.search);
+      if(params.city!==undefined) setHeroCity(params.city);
+      setPage("search");
+    } else if(target==="worker" && params.worker){
+      openWorkerProfile(params.worker);
+    } else {
+      setPage(target);
+    }
+  };
+
+  const handleNeedAuth = (reviewData, workerId) => {
+    setPendingReview({ workerId, review: reviewData });
+    handleShowAuth("login");
+  };
+
+  const handleReview = async (workerId, review) => {
+    if(!currentUser){
+      handleNeedAuth(review, workerId);
+      return;
+    }
+    try {
+      const { data: newReview, error } = await supabase.from("reviews").insert({
+        worker_id: workerId,
+        author_name: currentUser.name,
+        rating: review.rating,
+        comment: review.comment,
+        work_type: review.workType,
+      }).select().single();
+      if(error) throw error;
+
+      // Update selectedWorker locally — no full page reload
+      const shaped = {
+        ...newReview,
+        author: currentUser.name,
+        workType: newReview.work_type,
+        date: newReview.created_at?.split("T")[0],
+      };
+      setSelectedWorker(prev => {
+        if(!prev || prev.id !== workerId) return prev;
+        const updatedReviews = [...(prev.reviews||[]), shaped];
+        const avg = updatedReviews.reduce((s,r)=>s+r.rating,0) / updatedReviews.length;
+        return { ...prev, reviews: updatedReviews, rating: Math.round(avg*10)/10 };
+      });
+      // Also update workers list rating silently in background
+      setWorkers(ws => ws.map(w => {
+        if(w.id !== workerId) return w;
+        const updatedReviews = [...(w.reviews||[]), shaped];
+        const avg = updatedReviews.reduce((s,r)=>s+r.rating,0) / updatedReviews.length;
+        return { ...w, reviews: updatedReviews, rating: Math.round(avg*10)/10 };
+      }));
+      // If it's our own worker profile, update that too
+      if(workerProfile?.id===workerId) {
+        setWorkerProfile(prev => {
+          const updatedReviews = [...(prev.reviews||[]), shaped];
+          const avg = updatedReviews.reduce((s,r)=>s+r.rating,0) / updatedReviews.length;
+          return { ...prev, reviews: updatedReviews, rating: Math.round(avg*10)/10 };
+        });
+      }
+    } catch(e){ console.error("Review failed:", e); }
+  };
+
+  const handleToggleAvailable = async () => {
+    if(!workerProfile) return;
+    const newVal = !workerProfile.available;
+    await supabase.from("workers").update({available:newVal}).eq("id",workerProfile.id);
+    setWorkerProfile(p=>({...p,available:newVal}));
+    setWorkers(ws=>ws.map(w=>w.id===workerProfile.id?{...w,available:newVal}:w));
+  };
+
+  const refreshWorkerProfile = async (newAvatarUrl) => {
+    if(!workerProfile) return;
+    await loadWorkerProfile(workerProfile.id);
+    if(newAvatarUrl) setCurrentUser(u=>({...u,avatarUrl:newAvatarUrl}));
+    await loadData();
+  };
+
+  if(loading) return <SkeletonHomePage t={t}/>;
+  if(loadError) return <ErrorPage error={loadError} onRetry={loadData} t={t}/>;
+
   return (
-    <div style={{fontFamily:"'Geist','DM Sans','Segoe UI',system-ui,sans-serif",background:t.bg,color:t.text,minHeight:"100vh"}}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap');
-        @media (min-width: 768px) { .aloaji-mobile-nav { display: none !important; } }
-        @media (max-width: 767px) { .aloaji-desktop-only { display: none !important; } }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; overflow-x: hidden; }
-        button { -webkit-tap-highlight-color: transparent; }
-        input, textarea, select { font-size: 16px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
-        .fade-in { animation: fadeIn 0.2s ease forwards; }
-      `}</style>
-      <NavBar page={page} setPage={setPage} dark={dark} setDark={setDark} currentUser={currentUser} onShowAuth={handleShowAuth} onLogout={handleLogout} t={t}/>
-      <div style={{paddingTop:56}} className="aloaji-content">
-        <style>{`.aloaji-content { padding-bottom: 0; } @media (max-width: 767px) { .aloaji-content { padding-bottom: 70px; } }`}</style>
+    <div style={{paddingTop:56,paddingBottom:60,minHeight:"100vh",background:t.bg,fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}}>
+      <NavBar page={page} setPage={setPage} dark={dark} setDark={setDark}
+        currentUser={currentUser} onShowAuth={handleShowAuth} onLogout={handleLogout} t={t}/>
 
-        {/* Loading state */}
-        {loading&&(
-          <div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"60vh",flexDirection:"column",gap:16}}>
-            <div style={{width:48,height:48,borderRadius:"50%",border:`4px solid ${t.border}`,borderTop:`4px solid ${t.primary}`,animation:"spin 1s linear infinite"}}/>
-            <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
-            <p style={{color:t.text3,fontSize:14}}>Chargement des artisans...</p>
-          </div>
-        )}
+      {page==="home"&&<HomePage workers={workers} banner={banner} onNavigate={handleNavigate}
+        setProfFilter={setProfFilter} t={t} dark={dark} onShowAuth={handleShowAuth}/>}
 
-        {loading&&page==="home"&&<SkeletonHomePage t={t}/>}
+      {page==="search"&&<SearchPage workers={workers} onSelect={openWorkerProfile}
+        initSearch={heroSearch} initCity={heroCity} profFilter={profFilter}
+        setProfFilter={setProfFilter} favorites={favorites} onToggleFav={toggleFavorite} t={t}/>}
 
-        {!loading&&loadError&&(
-          <ErrorPage error={loadError} onRetry={loadData} t={t}/>
-        )}
+      {page==="monespace"&&currentUser&&currentUser.role==="worker"&&workerProfile&&(
+        <WorkerDash worker={workerProfile} onToggle={handleToggleAvailable}
+          onRefresh={refreshWorkerProfile} t={t}/>
+      )}
+      {page==="monespace"&&currentUser&&(currentUser.role==="consumer")&&(
+        <ConsumerDash currentUser={currentUser} workers={workers} favorites={favorites}
+          onToggleFav={toggleFavorite} onViewWorker={openWorkerProfile}
+          onSearch={()=>setPage("search")} t={t}/>
+      )}
+      {page==="monespace"&&currentUser&&currentUser.role==="pending"&&(
+        <div style={{padding:"60px 24px",textAlign:"center"}}>
+          <div style={{fontSize:48,marginBottom:16}}>⏳</div>
+          <h2 style={{color:t.text,marginBottom:8}}>Compte en cours de validation</h2>
+          <p style={{color:t.text2,fontSize:14}}>Notre équipe vérifie votre profil. Vous recevrez un email sous 24h.</p>
+        </div>
+      )}
+      {page==="monespace"&&!currentUser&&(
+        <div style={{padding:"80px 24px",textAlign:"center"}}>
+          <div style={{fontSize:48,marginBottom:16}}>👤</div>
+          <h2 style={{color:t.text,marginBottom:12}}>Connectez-vous</h2>
+          <p style={{color:t.text2,marginBottom:24,fontSize:14}}>Accédez à votre espace artisan ou client.</p>
+          <button onClick={()=>handleShowAuth("login")}
+            style={{padding:"12px 32px",borderRadius:10,background:t.cta,color:t.ctaText,
+              border:`1px solid ${t.ctaBorder}`,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>
+            Se connecter
+          </button>
+        </div>
+      )}
 
-        {!loading&&!loadError&&(
-          <>
-            {page==="home"&&<HomePage workers={workers} onNavigate={handleNavigate} setProfFilter={setProfFilter} t={t} dark={dark}/>}
-            {page==="search"&&<SearchPage workers={workers} onSelect={w=>openWorkerProfile(w)} initSearch={heroSearch} initCity={heroCity} profFilter={profFilter} setProfFilter={setProfFilter} favorites={favorites} onToggleFav={toggleFavorite} t={t}/>}
-            {page==="monespace"&&currentUser&&currentUser.role==="worker"&&!workerProfile&&(
-              <div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"60vh",flexDirection:"column",gap:16}}>
-                <div style={{width:40,height:40,borderRadius:"50%",border:`4px solid ${t.border}`,borderTop:`4px solid ${t.primary}`,animation:"spin 1s linear infinite"}}/>
-                <p style={{color:t.text3,fontSize:14}}>Chargement de votre espace...</p>
-              </div>
-            )}
-            {page==="monespace"&&currentUser&&workerProfile&&<WorkerDash worker={workerProfile} onToggle={onToggle} onRefresh={async()=>{await loadWorkerProfile(workerProfile.id);await loadData();}} t={t}/>}
-            {page==="monespace"&&currentUser&&currentUser.role==="pending"&&(
-              <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"60vh",padding:40,textAlign:"center"}}>
-                <div style={{marginBottom:16}}><Icon d={IC.clock} size={36} color={t.text3}/></div>
-                <h2 style={{margin:"0 0 10px",color:t.text}}>Demande en cours, {currentUser.name}!</h2>
-                <p style={{color:t.text2,margin:"0 0 8px",fontSize:15}}>Votre compte artisan est en cours de vérification.</p>
-                <p style={{color:t.text3,margin:"0 0 24px",fontSize:13}}>Vous recevrez un SMS dès que votre compte sera approuvé.</p>
-                <Btn t={t} onClick={()=>setPage("home")}><Icon d={IC.home} size={13} color={t.ctaText}/>Retour à l'accueil</Btn>
-              </div>
-            )}
-            {page==="monespace"&&currentUser&&!workerProfile&&currentUser.role==="consumer"&&(
-              <ConsumerDash currentUser={currentUser} workers={workers} favorites={favorites} onToggleFav={toggleFavorite} onViewWorker={openWorkerProfile} onSearch={()=>setPage("search")} t={t}/>
-            )}
-            {page==="monespace"&&!currentUser&&(
-              <div style={{minHeight:"calc(100vh - 56px)",background:t.bg}}>
-                <div style={{maxWidth:480,margin:"0 auto",padding:"80px 24px 40px",textAlign:"center"}}>
-                  {/* Icon */}
-                  <div style={{width:64,height:64,borderRadius:16,background:t.bg2,border:`1px solid ${t.border}`,
-                    display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 24px"}}>
-                    <Icon d={IC.user} size={28} color={t.text2}/>
-                  </div>
-                  <h2 style={{margin:"0 0 10px",fontSize:22,fontWeight:600,color:t.text,letterSpacing:"-0.3px"}}>
-                    Bienvenue sur AloAji
-                  </h2>
-                  <p style={{color:t.text3,margin:"0 0 32px",fontSize:14,lineHeight:1.6}}>
-                    Connectez-vous pour accéder à votre espace — que vous soyez client ou artisan.
-                  </p>
-                  {/* Two options side by side */}
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}}>
-                    {/* Client */}
-                    <button onClick={()=>handleShowAuth("login")}
-                      style={{background:t.card,border:`1px solid ${t.border}`,borderRadius:12,
-                        padding:"20px 16px",cursor:"pointer",textAlign:"center",fontFamily:"inherit",
-                        transition:"background .15s"}}
-                      onMouseEnter={e=>e.currentTarget.style.background=t.bg2}
-                      onMouseLeave={e=>e.currentTarget.style.background=t.card}>
-                      <div style={{width:40,height:40,borderRadius:10,background:t.bg2,border:`1px solid ${t.border}`,
-                        display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 12px"}}>
-                        <Icon d={IC.user} size={18} color={t.text2}/>
-                      </div>
-                      <div style={{fontWeight:600,fontSize:14,color:t.text,marginBottom:4}}>Je suis client</div>
-                      <div style={{fontSize:12,color:t.text3,lineHeight:1.4}}>Retrouvez vos artisans favoris et vos avis</div>
-                    </button>
-                    {/* Artisan */}
-                    <button onClick={()=>handleShowAuth("register")}
-                      style={{background:t.card,border:`1px solid ${t.border}`,borderRadius:12,
-                        padding:"20px 16px",cursor:"pointer",textAlign:"center",fontFamily:"inherit",
-                        transition:"background .15s"}}
-                      onMouseEnter={e=>e.currentTarget.style.background=t.bg2}
-                      onMouseLeave={e=>e.currentTarget.style.background=t.card}>
-                      <div style={{width:40,height:40,borderRadius:10,background:t.bg2,border:`1px solid ${t.border}`,
-                        display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 12px"}}>
-                        <Icon d={IC.wrench} size={18} color={t.text2}/>
-                      </div>
-                      <div style={{fontWeight:600,fontSize:14,color:t.text,marginBottom:4}}>Je suis artisan</div>
-                      <div style={{fontSize:12,color:t.text3,lineHeight:1.4}}>Créez votre profil et trouvez des clients</div>
-                    </button>
-                  </div>
-                  <p style={{fontSize:12,color:t.text3}}>
-                    Déjà inscrit ?{" "}
-                    <button onClick={()=>handleShowAuth("login")}
-                      style={{background:"none",border:"none",color:t.text2,cursor:"pointer",
-                        fontSize:12,fontFamily:"inherit",fontWeight:500,textDecoration:"underline"}}>
-                      Se connecter
-                    </button>
-                  </p>
-                </div>
+      {/* Worker profile sheet */}
+      {selectedWorker&&(
+        <WorkerSheet worker={selectedWorker} onClose={()=>setSelectedWorker(null)}
+          onReview={handleReview} currentUser={currentUser}
+          onNeedAuth={(rv)=>handleNeedAuth(rv, selectedWorker.id)}
+          isFav={favorites.includes(selectedWorker.id)}
+          onToggleFav={()=>toggleFavorite(selectedWorker.id)}
+          t={t}/>
+      )}
 
-                {/* Feature list */}
-                <div style={{maxWidth:480,margin:"0 auto",padding:"0 24px 60px"}}>
-                  <div style={{borderTop:`1px solid ${t.border}`,paddingTop:32}}>
-                    <div style={{fontSize:12,fontWeight:500,color:t.text3,letterSpacing:"0.5px",
-                      textTransform:"uppercase",marginBottom:16}}>Ce que vous pouvez faire</div>
-                    <div style={{display:"flex",flexDirection:"column",gap:12}}>
-                      {[
-                        {ic:IC.heart, t:"Sauvegarder vos artisans favoris", d:"Retrouvez-les rapidement sans chercher"},
-                        {ic:IC.messageCircle, t:"Laisser des avis", d:"Partagez votre expérience pour aider la communauté"},
-                        {ic:IC.wrench, t:"Espace artisan complet", d:"Gérez vos disponibilités, photos et avis reçus"},
-                      ].map((f,i)=>(
-                        <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",
-                          padding:"12px",background:t.bg2,borderRadius:8,border:`1px solid ${t.border}`}}>
-                          <div style={{width:32,height:32,borderRadius:8,background:t.bg3,
-                            display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                            <Icon d={f.ic} size={14} color={t.text2}/>
-                          </div>
-                          <div>
-                            <div style={{fontSize:13,fontWeight:500,color:t.text,marginBottom:2}}>{f.t}</div>
-                            <div style={{fontSize:12,color:t.text3}}>{f.d}</div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </div>
+      {/* Auth modal */}
+      {showResetPwd&&(
+        <ResetPasswordModal onClose={()=>{ setShowResetPwd(false); checkSession(); }} t={t}/>
+      )}
+      {showAuth&&!showResetPwd&&(
+        <PhoneAuth onClose={()=>setShowAuth(false)} onAuth={handleAuth}
+          mode={authMode} t={t} dbCities={cities} dbProfessions={professions}/>
+      )}
 
-      {freshSelected&&<WorkerSheet
-        worker={freshSelected}
-        onClose={()=>{setSelectedWorker(null);setReviewJustDone(false);}}
-        onReview={onReview}
-        currentUser={currentUser}
-        reviewAutoSubmitted={reviewJustDone}
-        onNeedAuth={(review)=>{
-          if(review) setPendingReview({workerId:freshSelected.id, review});
-          handleShowAuth("login");
-        }}
-        isFav={favorites.includes(freshSelected.id)}
-        onToggleFav={()=>toggleFavorite(freshSelected.id)}
-        t={t}/>}
-      {showAuth&&<PhoneAuth onClose={()=>setShowAuth(false)} onAuth={handleAuth} mode={authMode} t={t} dbCities={cities} dbProfessions={professions}/>}
+      {/* Mobile bottom nav */}
+      <nav style={{position:"fixed",bottom:0,left:0,right:0,zIndex:100,
+        background:t.nav,backdropFilter:"blur(12px)",borderTop:`1px solid ${t.border}`,
+        display:"flex",justifyContent:"space-around",alignItems:"center",height:60,
+        paddingBottom:"env(safe-area-inset-bottom)"}}>
+        {[
+          {id:"home",   label:"Accueil", ic:IC.home},
+          {id:"search", label:"Chercher",ic:IC.search},
+          {id:"monespace",label:"Mon Espace",ic:IC.user},
+        ].map(item=>(
+          <button key={item.id} onClick={()=>setPage(item.id)}
+            style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,
+              background:"none",border:"none",cursor:"pointer",padding:"8px 12px",
+              color:page===item.id?t.primary:t.text3,fontFamily:"inherit"}}>
+            <Icon d={item.ic} size={22} color={page===item.id?t.primary:t.text3}/>
+            <span style={{fontSize:11,fontWeight:page===item.id?600:400}}>{item.label}</span>
+          </button>
+        ))}
+      </nav>
     </div>
   );
 }
