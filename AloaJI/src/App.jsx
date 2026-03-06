@@ -2858,25 +2858,7 @@ export default function App() {
           mode={authMode} t={t} dbCities={cities} dbProfessions={professions}/>
       )}
 
-      {/* Mobile bottom nav */}
-      <nav style={{position:"fixed",bottom:0,left:0,right:0,zIndex:100,
-        background:t.nav,backdropFilter:"blur(12px)",borderTop:`1px solid ${t.border}`,
-        display:"flex",justifyContent:"space-around",alignItems:"center",height:60,
-        paddingBottom:"env(safe-area-inset-bottom)"}}>
-        {[
-          {id:"home",   label:"Accueil", ic:IC.home},
-          {id:"search", label:"Chercher",ic:IC.search},
-          {id:"monespace",label:"Mon Espace",ic:IC.user},
-        ].map(item=>(
-          <button key={item.id} onClick={()=>setPage(item.id)}
-            style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,
-              background:"none",border:"none",cursor:"pointer",padding:"8px 12px",
-              color:page===item.id?t.primary:t.text3,fontFamily:"inherit"}}>
-            <Icon d={item.ic} size={22} color={page===item.id?t.primary:t.text3}/>
-            <span style={{fontSize:11,fontWeight:page===item.id?600:400}}>{item.label}</span>
-          </button>
-        ))}
-      </nav>
+
     </div>
   );
 }
