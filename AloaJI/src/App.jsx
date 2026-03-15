@@ -82,6 +82,14 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
+// Detect native iOS Capacitor app
+const isNativeIOS = () => {
+  return typeof window !== "undefined" &&
+    (window.Capacitor?.isNativePlatform?.() ||
+     window.Capacitor?.platform === "ios" ||
+     (window.navigator?.userAgent?.includes("Capacitor") && /iPhone|iPad/.test(window.navigator.userAgent)));
+};
+
 // ─── DESIGN TOKENS — shadcn/ui inspired ──────────────────────────────────────
 const DARK = {
   // Base
@@ -1085,81 +1093,230 @@ function WorkerCard({ worker, onClick, isFav, onToggleFav, t }) {
 
 // ─── MAP VIEW ──────────────────────────────────────────────────────────────────
 function MapView({ workers, onSelect, t }) {
-  const [sel,setSel]=useState(null);
-  const W=600,H=400;
-  const BOUNDS={minLat:27.5,maxLat:36,minLng:-13.5,maxLng:0};
-  const proj=(lat,lng)=>({x:((lng-BOUNDS.minLng)/(BOUNDS.maxLng-BOUNDS.minLng))*W,y:H-((lat-BOUNDS.minLat)/(BOUNDS.maxLat-BOUNDS.minLat))*H});
-  const byCity={};
-  workers.forEach(w=>{if(!byCity[w.city])byCity[w.city]=[];byCity[w.city].push(w);});
-  return (
-    <div style={{borderRadius:16,overflow:"hidden",border:`1px solid ${t.border}`,position:"relative"}}>
-      <svg viewBox={`0 0 ${W} ${H}`} style={{width:"100%",display:"block"}}>
-        <rect width={W} height={H} fill="#0A1628"/>
-        {[...Array(7)].map((_,i)=><line key={`h${i}`} x1={0} y1={i*57} x2={W} y2={i*57} stroke="#ffffff05" strokeWidth="1"/>)}
-        {[...Array(9)].map((_,i)=><line key={`v${i}`} x1={i*67} y1={0} x2={i*67} y2={H} stroke="#ffffff05" strokeWidth="1"/>)}
-        <path d="M80,40 L220,10 L480,30 L580,120 L560,200 L520,300 L460,380 L360,410 L200,400 L100,350 L60,250 L40,150 Z" fill="#0F2240" stroke="#1E3A6A" strokeWidth="1.5"/>
-        {CITIES.map(city=>{
-          const pos=proj(city.lat,city.lng);
-          const cw=byCity[city.name]||[];
-          const avail=cw.filter(w=>w.available).length;
-          if(!cw.length)return null;
-          const isSel=sel===city.name;
-          return (
-            <g key={city.id} onClick={()=>setSel(isSel?null:city.name)} style={{cursor:"pointer"}}>
-              {avail>0&&<circle cx={pos.x} cy={pos.y} r={isSel?30:22} fill="none" stroke={t.primary} strokeWidth="1.5" opacity={isSel?0.6:0.25}/>}
-              <circle cx={pos.x} cy={pos.y} r={isSel?16:12} fill={isSel?t.primary:"#1E3A6A"} stroke={isSel?t.primaryDark:avail>0?t.primary+"60":"#2d4a7a"} strokeWidth={1.5}/>
-              <text x={pos.x} y={pos.y+0.5} textAnchor="middle" dominantBaseline="middle" fill={isSel?"#fff":"#7aadda"} fontSize={isSel?10:9} fontWeight="800">{cw.length}</text>
-              <text x={pos.x} y={pos.y+(isSel?27:20)} textAnchor="middle" fill={isSel?t.primary:"#4a7aaa"} fontSize={isSel?9:8} fontWeight={isSel?"700":"500"}>{city.name}</text>
-            </g>
-          );
-        })}
-      </svg>
-      {/* Legend */}
-      <div style={{position:"absolute",top:10,right:10,background:"rgba(10,22,40,0.9)",backdropFilter:"blur(8px)",borderRadius:10,padding:"8px 12px",border:"1px solid #1E3A6A"}}>
-        <div style={{fontSize:10,color:"#4a7aaa",fontWeight:700,marginBottom:5,letterSpacing:"0.5px"}}>ARTISANS</div>
-        {[{c:t.primary,l:"Disponibles"},{c:"#1E3A6A",l:"Indisponibles"}].map(x=>(
-          <div key={x.l} style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
-            <div style={{width:8,height:8,borderRadius:"50%",background:x.c,border:`1px solid ${x.c}`}}/>
-            <span style={{color:"#7aadda",fontSize:10}}>{x.l}</span>
+  const [sel, setSel] = useState(null);
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const markersRef = useRef([]);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+
+  // Group workers by city
+  const byCity = {};
+  workers.forEach(w => {
+    if(!w.city) return;
+    if(!byCity[w.city]) byCity[w.city] = { workers:[], lat:w.cityLat, lng:w.cityLng };
+    byCity[w.city].workers.push(w);
+    if(!byCity[w.city].lat) {
+      const known = CITIES.find(c => c.name === w.city);
+      if(known){ byCity[w.city].lat = known.lat; byCity[w.city].lng = known.lng; }
+    }
+  });
+
+  // All pins same neutral style, selected city gets green highlight
+  const renderMarkers = (L, selectedCity) => {
+    markersRef.current.forEach(m => m.remove());
+    markersRef.current = [];
+    Object.entries(byCity).forEach(([cityName, {workers:cw, lat, lng}]) => {
+      if(!lat || !lng) return;
+      const isSelected = cityName === selectedCity;
+      const color = isSelected ? "#16A34A" : "#374151";
+      const size = isSelected ? 42 : 34;
+      const border = isSelected ? 4 : 2;
+      const icon = L.divIcon({
+        className: "",
+        html: `<div style="background:${color};color:#fff;border-radius:50%;width:${size}px;height:${size}px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:${isSelected?15:12}px;border:${border}px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.25);cursor:pointer">${cw.length}</div>`,
+        iconSize: [size, size], iconAnchor: [size/2, size/2]
+      });
+      const marker = L.marker([lat, lng], { icon }).addTo(mapInstanceRef.current);
+      marker.bindTooltip(`<b>${cityName}</b> · ${cw.length} artisan${cw.length>1?"s":""}`, { direction:"top", offset:[0,-size/2-4] });
+      marker.on("click", () => setSel(prev => prev === cityName ? null : cityName));
+      markersRef.current.push(marker);
+    });
+  };
+
+  useEffect(() => {
+    if(!document.getElementById("leaflet-css")){
+      const link = document.createElement("link");
+      link.id = "leaflet-css"; link.rel = "stylesheet";
+      link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+      document.head.appendChild(link);
+    }
+    const init = () => {
+      if(!mapRef.current || mapInstanceRef.current) return;
+      const L = window.L;
+      const map = L.map(mapRef.current, { zoomControl:true, scrollWheelZoom:false }).setView([31.7917,-7.0926], 6);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution:"© OpenStreetMap", maxZoom:18 }).addTo(map);
+      mapInstanceRef.current = map;
+      renderMarkers(L, null);
+    };
+    if(window.L){ init(); }
+    else {
+      const s = document.createElement("script");
+      s.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+      s.onload = init;
+      document.head.appendChild(s);
+    }
+    return () => { if(mapInstanceRef.current){ mapInstanceRef.current.remove(); mapInstanceRef.current = null; } };
+  }, []);
+
+  useEffect(() => { if(mapInstanceRef.current && window.L) renderMarkers(window.L, sel); }, [workers, sel]);
+
+  const selWorkers = sel ? (byCity[sel]?.workers || []) : [];
+  const listWorkers = sel ? selWorkers : workers;
+
+  // Shared full worker card (same as list view)
+  const WorkerCard = ({ w }) => {
+    const rating = avg(w.reviews);
+    const profs = (w.professionData && w.professionData.length > 0)
+      ? w.professionData.filter(Boolean)
+      : w.professions.map(pid => PROFESSIONS.find(p => p.id===pid)).filter(Boolean);
+    const pl = PRICE_LEVELS.find(p => p.id === w.price_level);
+    return (
+      <div onClick={() => { onSelect(w); setSel(null); }}
+        style={{background:t.card, border:`1px solid ${t.border}`, borderRadius:12,
+          overflow:"hidden", cursor:"pointer", transition:"border-color .15s", flexShrink:0}}
+        onMouseEnter={e=>e.currentTarget.style.borderColor=t.border2}
+        onMouseLeave={e=>e.currentTarget.style.borderColor=t.border}>
+        {/* Portfolio strip */}
+        {w.portfolio&&w.portfolio.length>0&&(
+          <div style={{height:72, display:"flex", gap:0}}>
+            {w.portfolio.slice(0,3).map((item,i)=>(
+              item.url
+                ? <img key={item.id} src={item.url} alt="" style={{flex:i===0?2:1, objectFit:"cover", minWidth:0}}/>
+                : <PortfolioGrad key={item.id} gi={item.gi} style={{flex:i===0?2:1}}/>
+            ))}
           </div>
-        ))}
-      </div>
-      {/* City popup */}
-      {sel&&byCity[sel]&&(
-        <div style={{position:"absolute",bottom:0,left:0,right:0,background:t.card,borderTop:`1px solid ${t.border}`,padding:"14px 16px",maxHeight:240,overflow:"auto"}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-            <span style={{fontWeight:800,fontSize:15,color:t.text}}>{sel} ({byCity[sel].length})</span>
-            <button onClick={()=>setSel(null)} style={{background:"transparent",border:`1px solid ${t.border}`,borderRadius:6,width:26,height:26,color:t.text3,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>
-              <Icon d={IC.x} size={12} color={t.text3}/>
-            </button>
+        )}
+        <div style={{padding:"12px 14px"}}>
+          <div style={{display:"flex", gap:10, alignItems:"center"}}>
+            <div style={{position:"relative", flexShrink:0, marginTop:w.portfolio&&w.portfolio.length?"-18px":0, zIndex:1}}>
+              <div style={{border:`2px solid ${t.card}`, borderRadius:"50%", display:"inline-block"}}>
+                <Avatar worker={w} size={38} t={t}/>
+              </div>
+            </div>
+            <div style={{flex:1, minWidth:0}}>
+              <div style={{fontWeight:700, fontSize:14, color:t.text, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>{w.name}</div>
+              <div style={{display:"flex", alignItems:"center", gap:4, color:t.text3, fontSize:11, marginTop:1}}>
+                <Icon d={IC.mapPin} size={10} color={t.text3}/>{w.city}
+              </div>
+            </div>
+            <AvailBadge available={w.available} t={t}/>
           </div>
-          <div style={{display:"flex",flexDirection:"column",gap:7}}>
-            {byCity[sel].map(w=>{
-              const profs=w.professions.map(pid=>PROFESSIONS.find(p=>p.id===pid)).filter(Boolean);
-              const rating=avg(w.reviews);
-              return (
-                <div key={w.id} onClick={()=>onSelect(w)} style={{display:"flex",gap:10,alignItems:"center",background:t.bg2,borderRadius:10,padding:"10px 12px",cursor:"pointer",border:`1px solid ${t.border}`}}>
-                  <Avatar worker={w} size={38} t={t}/>
-                  <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontWeight:700,fontSize:13,color:t.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w.name}</div>
-                    <div style={{display:"flex",gap:4,marginTop:2,flexWrap:"wrap"}}>
-                      {profs.map(p=><span key={p.id} style={{fontSize:10,color:t.text3,fontWeight:400}}>{p.name}</span>)}
-                    </div>
-                  </div>
-                  <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
-                    {rating&&<div style={{display:"flex",alignItems:"center",gap:3}}><Stars rating={parseFloat(rating)} size={10} t={t}/><span style={{color:t.accent,fontSize:10,fontWeight:700}}>{rating}</span></div>}
-                    <AvailBadge available={w.available} t={t}/>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          {profs.length>0&&(
+            <div style={{display:"flex", flexWrap:"wrap", gap:3, marginTop:8}}>
+              {profs.map(p=><Badge key={p.id} t={t} style={{fontSize:10, color:t.text3}}>{p.name}</Badge>)}
+            </div>
+          )}
         </div>
-      )}
+        <div style={{padding:"8px 14px", borderTop:`1px solid ${t.border}`, display:"flex", justifyContent:"space-between", alignItems:"center"}}>
+          <div style={{display:"flex", alignItems:"center", gap:6}}>
+            {rating
+              ? <><Stars rating={parseFloat(rating)} size={10} t={t}/>
+                  <span style={{color:t.text2, fontSize:11, fontWeight:500}}>{rating}</span>
+                  <span style={{color:t.text3, fontSize:10}}>({w.reviews.length})</span></>
+              : <span style={{color:t.text3, fontSize:11}}>Aucun avis</span>}
+          </div>
+          {pl&&<span style={{padding:"1px 6px", borderRadius:5, fontSize:10, fontWeight:800,
+            background:pl.color+"18", color:pl.color, border:`1px solid ${pl.color}40`}}>{pl.label}</span>}
+        </div>
+      </div>
+    );
+  };
+
+  // ── MOBILE ─────────────────────────────────────────────────────────────────
+  if(isMobile) {
+    return (
+      <>
+        {/* Fixed full-screen map: top = nav+filters, bottom = bottom nav */}
+        <div style={{
+          position:"fixed",
+          top:"calc(56px + env(safe-area-inset-top, 0px) + 124px)",
+          bottom:"calc(60px + env(safe-area-inset-bottom, 0px))",
+          left:0, right:0,
+          zIndex:1
+        }}>
+          <div ref={mapRef} style={{width:"100%", height:"100%"}}/>
+        </div>
+        {/* Spacer so page height matches the fixed map area */}
+        <div style={{height:"calc(100vh - 56px - env(safe-area-inset-top, 0px) - 124px - 60px - env(safe-area-inset-bottom, 0px))"}}/>
+        {sel && selWorkers.length > 0 && (
+          // z-index 150 = above map (1) but below nav (100)... wait nav is 100
+          // We need ABOVE nav (100), so use 200
+          <div style={{
+              position:"fixed",
+              bottom:"calc(60px + env(safe-area-inset-bottom, 0px))",
+              left:0, right:0, zIndex:199
+            }}>
+            <div onClick={() => setSel(null)}
+              style={{position:"fixed", inset:0, zIndex:-1, background:"rgba(0,0,0,0.3)"}}/>
+            <div style={{
+              background:t.card, borderTop:`1px solid ${t.border}`,
+              borderRadius:"20px 20px 0 0",
+              maxHeight:"50vh", display:"flex", flexDirection:"column",
+              boxShadow:"0 -4px 20px rgba(0,0,0,0.15)"
+            }}>
+              <div style={{padding:"10px 16px 0", flexShrink:0}}>
+                <div style={{width:40, height:4, borderRadius:2, background:t.border2, margin:"0 auto 10px"}}/>
+                <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10}}>
+                  <div>
+                    <span style={{fontWeight:800, fontSize:16, color:t.text}}>{sel}</span>
+                    <span style={{color:t.text3, fontSize:13, marginLeft:8}}>{selWorkers.length} artisan{selWorkers.length>1?"s":""}</span>
+                  </div>
+                  <button onClick={() => setSel(null)}
+                    style={{background:t.bg2, border:`1px solid ${t.border}`, borderRadius:8,
+                      width:30, height:30, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center"}}>
+                    <Icon d={IC.x} size={13} color={t.text3}/>
+                  </button>
+                </div>
+              </div>
+              <div style={{overflowY:"auto", padding:"0 14px 16px", display:"flex", flexDirection:"column", gap:10}}>
+                {selWorkers.map(w => <WorkerCard key={w.id} w={w}/>)}
+              </div>
+            </div>
+          </div>
+        )}
+      </>
+    );
+  }
+
+  // ── DESKTOP: full-height edge-to-edge split ───────────────────────────────
+  return (
+    <div style={{
+      display:"flex", gap:0,
+      // Negative margin to break out of SearchPage's padding:"0 20px 20px"
+      margin:"0 -20px -20px",
+      borderTop:`1px solid ${t.border}`,
+      height:"calc(100vh - 56px - 128px)",
+      minHeight:500,
+      overflow:"hidden"
+    }}>
+      {/* Left: scrollable worker list */}
+      <div style={{width:340, flexShrink:0, borderRight:`1px solid ${t.border}`,
+        display:"flex", flexDirection:"column", background:t.bg, overflowY:"auto", paddingLeft:20}}>
+        {/* Sticky header */}
+        <div style={{padding:"14px 16px", borderBottom:`1px solid ${t.border}`,
+          background:t.bg2, flexShrink:0, position:"sticky", top:0, zIndex:2}}>
+          <div style={{fontWeight:700, fontSize:14, color:t.text, padding:"0 2px"}}>
+            {sel ? `${sel} · ${selWorkers.length} artisan${selWorkers.length>1?"s":""}` : `${workers.length} artisans trouvés`}
+          </div>
+          {sel && (
+            <button onClick={() => setSel(null)}
+              style={{marginTop:5, background:"none", border:"none", cursor:"pointer",
+                color:t.text3, fontSize:12, fontFamily:"inherit", padding:0,
+                display:"flex", alignItems:"center", gap:4}}>
+              <Icon d={IC.x} size={11} color={t.text3}/>Voir tous les artisans
+            </button>
+          )}
+        </div>
+        {/* Worker cards */}
+        <div style={{padding:"12px 14px", display:"flex", flexDirection:"column", gap:10}}>
+          {listWorkers.map(w => <WorkerCard key={w.id} w={w}/>)}
+        </div>
+      </div>
+      {/* Right: full map fills remaining space */}
+      <div ref={mapRef} style={{flex:1, zIndex:1}}/>
     </div>
   );
 }
-
 // ─── WORKER SHEET ──────────────────────────────────────────────────────────────
 function WorkerSheet({ worker, onClose, onReview, currentUser, onNeedAuth, isFav, onToggleFav, reviewAutoSubmitted=false, t }) {
   const [tab,setTab]=useState(reviewAutoSubmitted?"reviews":"profile");
@@ -1653,7 +1810,7 @@ function SkeletonWorkerCard({ t }) {
 function SkeletonHomePage({ t }) {
   return (
     <div style={{minHeight:"100vh",background:t.bg}}>
-      <style>{`@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}`}</style>
+      <style>{`@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}} input,select,textarea{font-size:16px!important}`}</style>
       <div style={{background:t.card,borderBottom:`1px solid ${t.border}`,padding:"64px 24px 72px",textAlign:"center"}}>
         <div style={{maxWidth:500,margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center",gap:16}}>
           <SkeletonBox w={180} h={28} r={14}/>
@@ -1924,17 +2081,17 @@ function SearchPage({ workers, onSelect, initSearch, initCity, profFilter, setPr
         </div>
       </div>
 
-      <div style={{maxWidth:840,margin:"0 auto",padding:"16px 20px"}}>
-        <div style={{color:t.text3,fontSize:12,marginBottom:14}}>{filtered.length} artisan{filtered.length!==1?"s":""} trouvé{filtered.length!==1?"s":""}</div>
-        {view==="list"?(
+      {view==="list"?(
+        <div style={{maxWidth:840,margin:"0 auto",padding:"16px 20px"}}>
+          <div style={{color:t.text3,fontSize:12,marginBottom:14}}>{filtered.length} artisan{filtered.length!==1?"s":""} trouvé{filtered.length!==1?"s":""}</div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:14}}>
             {filtered.map(w=><WorkerCard key={w.id} worker={w} onClick={onSelect} isFav={favorites.includes(w.id)} onToggleFav={()=>onToggleFav&&onToggleFav(w.id)} t={t}/>)}
             {!filtered.length&&<EmptySearch search={search} city={city} t={t}/>}
           </div>
-        ):(
-          <MapView workers={filtered} onSelect={onSelect} t={t}/>
-        )}
-      </div>
+        </div>
+      ):(
+        <MapView workers={filtered} onSelect={onSelect} t={t}/>
+      )}
     </div>
   );
 }
@@ -2396,9 +2553,13 @@ function NavBar({ page, setPage, dark, setDark, currentUser, onShowAuth, onLogou
     : null;
   return (
     <>
-      <nav style={{position:"fixed",top:0,left:0,right:0,zIndex:100,
-        background:t.nav,backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",
-        borderBottom:`1px solid ${t.border}`,height:56}}>
+      <nav style={{position:"fixed",top:0,left:0,right:0,zIndex:300,
+        background:isNativeIOS()?t.card:t.nav,
+        backdropFilter:isNativeIOS()?"none":"blur(12px)",
+        WebkitBackdropFilter:isNativeIOS()?"none":"blur(12px)",
+        borderBottom:`1px solid ${t.border}`,
+        height:"calc(56px + env(safe-area-inset-top, 0px))",
+        paddingTop:"env(safe-area-inset-top, 0px)"}}>
         <div style={{maxWidth:1100,margin:"0 auto",height:"100%",display:"flex",
           alignItems:"center",padding:"0 20px",gap:8}}>
           {/* Logo */}
@@ -2461,10 +2622,14 @@ function NavBar({ page, setPage, dark, setDark, currentUser, onShowAuth, onLogou
       </nav>
 
       {/* Mobile bottom nav */}
-      <div style={{position:"fixed",bottom:0,left:0,right:0,zIndex:100,
-        background:t.nav,backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",
+      <div style={{position:"fixed",bottom:0,left:0,right:0,zIndex:300,
+        background:isNativeIOS()?t.card:t.nav,
+        backdropFilter:isNativeIOS()?"none":"blur(12px)",
+        WebkitBackdropFilter:isNativeIOS()?"none":"blur(12px)",
         borderTop:`1px solid ${t.border}`,display:"flex",
-        paddingBottom:"env(safe-area-inset-bottom,0px)"}} className="aloaji-mobile-nav">
+        paddingBottom:"env(safe-area-inset-bottom,0px)",
+        WebkitTransform:"translateZ(0)",
+        transform:"translateZ(0)"}} className="aloaji-mobile-nav">
         {NAV.map(n=>{
           const isActive=page===n.id;
           const isProfile=n.id==="monespace";
@@ -2574,6 +2739,8 @@ export default function App() {
       const shaped = (dbWorkers||[]).map((w,i)=>({
         ...w,
         city: w.city?.name || "",
+        cityLat: w.city?.lat ?? null,
+        cityLng: w.city?.lng ?? null,
         professions: (w.worker_professions||[]).map(wp=>wp.profession?.id).filter(Boolean),
         professionData: (w.worker_professions||[]).map(wp=>wp.profession).filter(Boolean),
         price_level: w.price_level||0,
@@ -2798,7 +2965,7 @@ export default function App() {
   if(loadError) return <ErrorPage error={loadError} onRetry={loadData} t={t}/>;
 
   return (
-    <div style={{paddingTop:56,paddingBottom:60,minHeight:"100vh",background:t.bg,fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}}>
+    <div style={{paddingTop:"calc(56px + env(safe-area-inset-top, 0px))",paddingBottom:"calc(60px + env(safe-area-inset-bottom, 0px))",minHeight:"100vh",background:t.bg,fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}}>
       <NavBar page={page} setPage={setPage} dark={dark} setDark={setDark}
         currentUser={currentUser} onShowAuth={handleShowAuth} onLogout={handleLogout} t={t}/>
 
@@ -2857,7 +3024,6 @@ export default function App() {
         <PhoneAuth onClose={()=>setShowAuth(false)} onAuth={handleAuth}
           mode={authMode} t={t} dbCities={cities} dbProfessions={professions}/>
       )}
-
 
     </div>
   );

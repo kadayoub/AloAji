@@ -15,3 +15,7 @@ body {
 
 @media (max-width: 640px) { .aloaji-desktop-only { display: none !important; } }
 @media (min-width: 641px) { .aloaji-mobile-nav   { display: none !important; } }
+
+input, select, textarea {
+  font-size: 16px !important;
+}
