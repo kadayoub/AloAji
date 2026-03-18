@@ -1662,7 +1662,7 @@ function WorkerSheet({ worker, onClose, onReview, currentUser, onNeedAuth, isFav
 }
 
 // ─── HOME PAGE ────────────────────────────────────────────────────────────────
-function HomePage({ workers, banner, onNavigate, setProfFilter, t, dark, onShowAuth }) {
+function HomePage({ workers, banner, onNavigate, setProfFilter, t, dark, onShowAuth, cities=[] }) {
   const [hs,setHs]=useState(""), [hc,setHc]=useState("all");
   const top=[...workers].filter(w=>w.reviews.length>0).sort((a,b)=>(avg(b.reviews)||0)-(avg(a.reviews)||0)).slice(0,4);
 
@@ -1697,7 +1697,7 @@ function HomePage({ workers, banner, onNavigate, setProfFilter, t, dark, onShowA
               </div>
               <select value={hc} onChange={e=>setHc(e.target.value)} style={{background:t.bg2,border:`1px solid ${t.border}`,borderRadius:8,padding:"10px 12px",color:hc==="all"?t.text3:t.text,fontSize:14,fontFamily:"inherit",outline:"none"}}>
                 <option value="all">Toutes les villes</option>
-                {CITIES.map(c=><option key={c.id} value={c.name}>{c.name}</option>)}
+                {cities.map(c=><option key={c.id} value={c.name}>{c.name}</option>)}
               </select>
             </div>
             <Btn t={t} size="lg" onClick={()=>onNavigate("search",{search:hs,city:hc})} style={{width:"100%"}}>
@@ -1767,7 +1767,7 @@ function HomePage({ workers, banner, onNavigate, setProfFilter, t, dark, onShowA
         {/* Stats */}
         <div style={{background:t.bg2,borderRadius:10,padding:"24px",border:`1px solid ${t.border}`,
           display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:0,textAlign:"center"}}>
-          {[{n:`${workers.length}+`,l:"Artisans vérifiés"},{n:`${workers.filter(w=>w.available).length}`,l:"Disponibles"},{n:`${CITIES.length}`,l:"Villes"}].map((s,i)=>(
+          {[{n:`${workers.length}+`,l:"Artisans vérifiés"},{n:`${workers.filter(w=>w.available).length}`,l:"Disponibles"},{n:`${cities.length}`,l:"Villes"}].map((s,i)=>(
             <div key={s.l} style={{padding:"8px",borderRight:i<2?`1px solid ${t.border}`:"none"}}>
               <div style={{fontSize:24,fontWeight:600,color:t.text}}>{s.n}</div>
               <div style={{color:t.text3,fontSize:12,marginTop:2}}>{s.l}</div>
@@ -1991,7 +1991,7 @@ function Footer({ t, dark=false }) {
 }
 
 // ─── SEARCH PAGE ───────────────────────────────────────────────────────────────
-function SearchPage({ workers, onSelect, initSearch, initCity, profFilter, setProfFilter, favorites=[], onToggleFav, t }) {
+function SearchPage({ workers, onSelect, initSearch, initCity, profFilter, setProfFilter, favorites=[], onToggleFav, t, cities=[] }) {
   const [search,setSearch]=useState(initSearch||"");
   const [city,setCity]=useState(initCity||"all");
   const [avail,setAvail]=useState(false);
@@ -2022,7 +2022,7 @@ function SearchPage({ workers, onSelect, initSearch, initCity, profFilter, setPr
             </div>
             <select value={city} onChange={e=>setCity(e.target.value)} style={{background:t.bg2,border:`1px solid ${t.border}`,borderRadius:9,padding:"9px 10px",color:city==="all"?t.text3:t.text,fontSize:12,fontFamily:"inherit",outline:"none",flexShrink:0}}>
               <option value="all">Toutes les villes</option>
-              {CITIES.map(c=><option key={c.id} value={c.name}>{c.name}</option>)}
+              {cities.map(c=><option key={c.id} value={c.name}>{c.name}</option>)}
             </select>
             {/* View toggle — RIGHT HERE, not with category chips */}
             <div style={{display:"flex",background:t.bg2,borderRadius:9,border:`1px solid ${t.border}`,overflow:"hidden",flexShrink:0}}>
@@ -2970,11 +2970,11 @@ export default function App() {
         currentUser={currentUser} onShowAuth={handleShowAuth} onLogout={handleLogout} t={t}/>
 
       {page==="home"&&<HomePage workers={workers} banner={banner} onNavigate={handleNavigate}
-        setProfFilter={setProfFilter} t={t} dark={dark} onShowAuth={handleShowAuth}/>}
+        setProfFilter={setProfFilter} t={t} dark={dark} onShowAuth={handleShowAuth} cities={cities}/>}
 
       {page==="search"&&<SearchPage workers={workers} onSelect={openWorkerProfile}
         initSearch={heroSearch} initCity={heroCity} profFilter={profFilter}
-        setProfFilter={setProfFilter} favorites={favorites} onToggleFav={toggleFavorite} t={t}/>}
+        setProfFilter={setProfFilter} favorites={favorites} onToggleFav={toggleFavorite} t={t} cities={cities}/>}
 
       {page==="monespace"&&currentUser&&currentUser.role==="worker"&&workerProfile&&(
         <WorkerDash worker={workerProfile} onToggle={handleToggleAvailable}

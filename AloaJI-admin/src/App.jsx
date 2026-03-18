@@ -5,7 +5,7 @@ import { createClient } from "@supabase/supabase-js";
 // This key must be kept server-side only in production — for now it's in the admin-only bundle
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY
+  import.meta.env.VITE_SUPABASE_SERVICE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
 // ── Admin allowlist — only these emails can access the admin panel ──────────
@@ -815,9 +815,20 @@ function Workers({ workers, setWorkers, profs, cities, onRefresh }) {
                     <Icon d={IC.edit} size={12} color={T.text2}/>Modifier
                   </Btn>
                   <Btn variant="danger" size="sm" onClick={async()=>{
-                    if(!confirm("Supprimer cet artisan ?")) return;
-                    await supabase.from("workers").delete().eq("id",w.id);
-                    setWorkers(ws=>ws.filter(x=>x.id!==w.id));
+                    if(!confirm("Supprimer cet artisan ? Cette action est irréversible.")) return;
+                    try {
+                      const step1 = await supabase.from("portfolio_photos").delete().eq("worker_id", w.id);
+                      if(step1.error) throw new Error("portfolio_photos: " + step1.error.message);
+                      const step2 = await supabase.from("worker_professions").delete().eq("worker_id", w.id);
+                      if(step2.error) throw new Error("worker_professions: " + step2.error.message);
+                      const step3 = await supabase.from("reviews").delete().eq("worker_id", w.id);
+                      if(step3.error) throw new Error("reviews: " + step3.error.message);
+                      const { error } = await supabase.from("workers").delete().eq("id", w.id);
+                      if(error) throw new Error("workers: " + error.message + (error.details ? " | " + error.details : "") + (error.hint ? " | Hint: " + error.hint : ""));
+                      setWorkers(ws=>ws.filter(x=>x.id!==w.id));
+                    } catch(e) {
+                      alert("Erreur suppression: " + e.message);
+                    }
                   }}>
                     <Icon d={IC.trash} size={12} color={T.danger}/>
                   </Btn>
@@ -860,7 +871,8 @@ function Professions({ profs, setProfs, workers }) {
 
   const deletePro = async id => {
     if(!confirm("Supprimer ce métier ?")) return;
-    await supabase.from("professions").delete().eq("id",id);
+    const { error } = await supabase.from("professions").delete().eq("id",id);
+    if(error) { alert("Erreur suppression: " + error.message); return; }
     setProfs(ps=>ps.filter(x=>x.id!==id));
   };
 
@@ -1005,7 +1017,8 @@ function Cities({ cities, setCities, workers }) {
 
   const deleteCity = async id => {
     if(!confirm("Supprimer cette ville ?")) return;
-    await supabase.from("cities").delete().eq("id",id);
+    const { error } = await supabase.from("cities").delete().eq("id",id);
+    if(error) { alert("Erreur suppression: " + error.message); return; }
     setCities(cs=>cs.filter(x=>x.id!==id));
   };
 
@@ -1691,7 +1704,7 @@ export default function AdminApp() {
           </div>
         )}
 
-        {!loading&&section==="dashboard"   &&<Dashboard workers={workers} pending={pending} cities={cities} profs={profs} go={setSection}/>}
+        {!loading&&section==="dashboard"   &&<Dashboard workers={workers} pending={pending} consumers={consumers} cities={cities} profs={profs} go={setSection}/>}
         {!loading&&section==="pending"     &&<Pending pending={pending} profs={profs} onApprove={approve} onReject={reject} onRefresh={loadAll}/>}
         {!loading&&section==="workers"     &&<Workers workers={workers} setWorkers={setWorkers} profs={profs} cities={cities} onRefresh={loadAll}/>}
         {!loading&&section==="membres"     &&<Membres consumers={consumers} onRefresh={loadAll}/>}
